@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 body {
-    --background: #f5eedc;
+    --tan: #f5eedc;
     --greenlight: #96ceb4;
     --redshade: #d9534f;
     --orangelight: #ecb390;
 
     font-family: "Source Sans Pro", sans-serif;
-    background-color: var(--background);
+    background-color: white;
     margin: 0;
     padding: 0;
 }
