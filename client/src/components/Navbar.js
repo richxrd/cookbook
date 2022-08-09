@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import AppIcon from "../assets/icon.png";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
@@ -9,7 +9,7 @@ const Navbar = () => {
     const handleNavClick = () => setNav(!nav);
 
     return (
-        <div className="w-full bg-[#f5eedc] h-24 fixed drop-shadow-lg">
+        <div className="w-full bg-[#f5eedc] h-24 fixed drop-shadow-lg z-10">
             <div className="flex h-full items-center justify-between mx-auto px-6 max-w-screen-xl font-medium">
                 {/* Icon */}
                 <a
@@ -22,9 +22,15 @@ const Navbar = () => {
                 <div className="hidden md:flex font-medium text-lg">
                     {/* Desktop Menu */}
                     <ul className="hidden md:flex font-medium text-lg space-x-4">
-                        <li className="cursor-pointer">Recipes</li>
-                        <li className="cursor-pointer">Healthy</li>
-                        <li className="cursor-pointer">Baking</li>
+                        <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                            Recipes
+                        </li>
+                        <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                            Healthy
+                        </li>
+                        <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                            Baking
+                        </li>
                     </ul>
                 </div>
 
@@ -34,21 +40,26 @@ const Navbar = () => {
                         <div className="cursor-pointer">
                             <div>
                                 <ul className="flex items-center space-x-4">
-                                    <li className="cursor-pointer">Profile</li>
-                                    <li className="cursor-pointer">
-                                        Favorites
+                                    <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                                        Profile
                                     </li>
-                                    <li className="cursor-pointer">
+                                    <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
                                         Notifications
                                     </li>
-                                    <li className="cursor-pointer">Logout</li>
+                                    <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                                        Logout
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     ) : (
                         <ul className="flex space-x-4">
-                            <li className="cursor-pointer">Log In</li>
-                            <li className="cursor-pointer">Join</li>
+                            <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                                Log In
+                            </li>
+                            <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                                Join
+                            </li>
                         </ul>
                     )}
                 </div>
@@ -89,7 +100,6 @@ const Navbar = () => {
                         <div>
                             <ul className="flex flex-col space-y-2">
                                 <li className="cursor-pointer">Profile</li>
-                                <li className="cursor-pointer">Favorites</li>
                                 <li className="cursor-pointer">
                                     Notifications
                                 </li>
