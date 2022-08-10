@@ -6,7 +6,7 @@ const HomeRow = ({ category }) => {
         <div className="flex flex-col space-y-2">
             {/* Title */}
             <div>
-                <h1 className="text-2xl font-medium tracking-wide uppercase text-[#d9534f]">
+                <h1 className="text-2xl font-medium tracking-wide uppercase text-[#96ceb4]">
                     {category}
                 </h1>
             </div>
