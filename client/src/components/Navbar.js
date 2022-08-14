@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import AppIcon from "../assets/icon.png";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Navbar = () => {
     const [nav, setNav] = useState(false);
-    const [user, setUser] = useState(true);
+    const [user, setUser] = useState(false);
 
     const handleNavClick = () => setNav(!nav);
 
     return (
         <div className="w-full bg-[#f5eedc] h-24 fixed drop-shadow-lg z-10">
-            <div className="flex h-full items-center justify-between mx-auto px-6 max-w-screen-xl font-medium">
+            <div className="flex h-full items-center justify-between mx-auto px-6 max-w-screen-xl font-medium}">
                 {/* Icon */}
                 <a
                     href="."
-                    className="flex items-center space-x-2 cursor-pointer"
+                    className="flex items-center space-x-2 cursor-pointer w-1/3"
                 >
                     <img className="w-16" src={AppIcon} alt="icon" />
                     <h1 className="text-3xl">Cookbook</h1>
                 </a>
                 <div className="hidden md:flex font-medium text-lg">
                     {/* Desktop Menu */}
-                    <ul className="hidden md:flex font-medium text-lg space-x-4">
+                    <ul className="hidden md:flex font-medium text-lg space-x-4 w-1/3">
                         <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
                             Recipes
                         </li>
@@ -35,7 +36,7 @@ const Navbar = () => {
                 </div>
 
                 {/* User */}
-                <div className="hidden md:inline text-lg">
+                <div className="hidden md:flex text-lg w-1/3 justify-end">
                     {user ? (
                         <div className="cursor-pointer">
                             <div>
@@ -55,10 +56,7 @@ const Navbar = () => {
                     ) : (
                         <ul className="flex space-x-4">
                             <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
-                                Log In
-                            </li>
-                            <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
-                                Join
+                                <Link to="/auth">Login</Link>
                             </li>
                         </ul>
                     )}
@@ -108,8 +106,9 @@ const Navbar = () => {
                         </div>
                     ) : (
                         <div className="flex flex-col text-left space-y-2">
-                            <div className="cursor-pointer">Log In</div>
-                            <div className="cursor-pointer">Join</div>
+                            <Link to="/auth" className="cursor-pointer">
+                                Log In
+                            </Link>
                         </div>
                     )}
                 </div>
