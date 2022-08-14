@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
     return (
         <div className="w-full bg-[#f5eedc] text-black py-y px-2">
-            <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-3 border-b-2 border-b-yellow-300 px-6 py-8">
+            <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-4 border-b-2 border-b-yellow-300 px-6 py-8">
                 <div>
                     <h1 className="font-bold uppercase pt-2">Diets</h1>
                     <ul>
@@ -12,6 +12,16 @@ const Footer = () => {
                         <li className="py-1">Whole 30</li>
                         <li className="py-1">Atkins</li>
                         <li className="py-1">Vegan</li>
+                    </ul>
+                </div>
+                <div>
+                    <h1 className="font-bold uppercase pt-2">Cuisines</h1>
+                    <ul>
+                        <li className="py-1">American</li>
+                        <li className="py-1">Chinese</li>
+                        <li className="py-1">Indian</li>
+                        <li className="py-1">Mexican</li>
+                        <li className="py-1">Italian</li>
                     </ul>
                 </div>
                 <div>
