@@ -9,7 +9,7 @@ import Recipe from "./pages/Recipe";
 
 const App = () => {
     return (
-        <div>
+        <div className="font-sans">
             <Navbar />
             <Routes>
                 <Route path="/" element={<Home />} />
