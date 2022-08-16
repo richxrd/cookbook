@@ -20,9 +20,9 @@ const Navbar = () => {
                     <img className="w-16" src={AppIcon} alt="icon" />
                     <h1 className="text-3xl">Cookbook</h1>
                 </a>
-                <div className="hidden md:flex font-medium text-lg">
+                <div className="hidden md:flex text-lg">
                     {/* Desktop Menu */}
-                    <ul className="hidden md:flex font-medium text-lg space-x-4 w-1/3">
+                    <ul className="hidden md:flex text-lg space-x-4 w-1/3">
                         <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
                             Recipes
                         </li>
