@@ -21,7 +21,7 @@ const Recipe = () => {
     const {
         title,
         author,
-        text,
+        description,
         image,
         time,
         servings,
@@ -44,9 +44,9 @@ const Recipe = () => {
     };
 
     return (
-        <div className="h-fit pt-28 py-12 md:pt-32 px-6 mx-auto max-w-screen-xl">
+        <div className="h-fit pt-32 py-16 md:pt-32 px-6 mx-auto max-w-screen-xl">
             {/* Name, author, image, text, timers */}
-            <div className="flex flex-col w-full py-4 space-y-4 md:space-y-0 md:space-x-8 md:flex-row">
+            <div className="flex flex-col w-full space-y-4 md:space-y-0 md:space-x-8 md:flex-row">
                 <div className="flex flex-col space-y-4">
                     {/* Name */}
                     <h1 className="text-4xl font-semibold md:text-5xl">
@@ -67,7 +67,7 @@ const Recipe = () => {
                         </div>
                     </div>
                     {/* Text */}
-                    <p className="text-lg">{text}</p>
+                    <p className="text-lg">{description}</p>
 
                     {/* Timers */}
                     <div className="hidden md:block">
