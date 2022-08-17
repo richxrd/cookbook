@@ -1,42 +1,47 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import AppIcon from "../assets/icon.png";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Navbar = () => {
     const [nav, setNav] = useState(false);
-    const [user, setUser] = useState(false);
+    const [user, setUser] = useState(true);
+
+    const navigate = useNavigate();
 
     const handleNavClick = () => setNav(!nav);
-
+    const handleHomeBtn = () => {
+        navigate("/");
+    };
     return (
         <div className="w-full bg-[#f5eedc] h-24 fixed drop-shadow-lg z-10">
-            <div className="flex h-full items-center justify-between mx-auto px-6 max-w-screen-xl font-medium}">
+            <div className="flex h-full items-center justify-between mx-auto px-6 max-w-screen-xl ">
                 {/* Icon */}
-                <a
-                    href="."
+                <div
+                    onClick={handleHomeBtn}
                     className="flex items-center space-x-2 cursor-pointer w-1/3"
                 >
                     <img className="w-16" src={AppIcon} alt="icon" />
                     <h1 className="text-3xl">Cookbook</h1>
-                </a>
-                <div className="hidden md:flex text-lg">
+                </div>
+                <div className="hidden md:flex">
                     {/* Desktop Menu */}
-                    <ul className="hidden md:flex text-lg space-x-4 w-1/3">
+                    <ul className="hidden md:flex space-x-4 text-center whitespace-nowrap">
                         <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
                             Recipes
                         </li>
                         <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
-                            Healthy
+                            Quick Recipes
                         </li>
                         <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
-                            Baking
+                            Cuisines
                         </li>
                     </ul>
                 </div>
 
                 {/* User */}
-                <div className="hidden md:flex text-lg w-1/3 justify-end">
+                <div className="hidden md:flex w-1/3 justify-end">
                     {user ? (
                         <div className="cursor-pointer">
                             <div>
@@ -44,8 +49,11 @@ const Navbar = () => {
                                     <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
                                         Profile
                                     </li>
-                                    <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
-                                        Notifications
+                                    <li
+                                        onClick={() => navigate("/recipes/new")}
+                                        className="cursor-pointer hover:text-[#d9534f] transition duration-200"
+                                    >
+                                        Add
                                     </li>
                                     <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
                                         Logout
@@ -81,25 +89,28 @@ const Navbar = () => {
                 className={
                     !nav
                         ? "hidden"
-                        : "absolute bg-[#f5eedc] w-full px-6 py-4 text-left text-lg font-medium md:hidden"
+                        : "absolute bg-[#f5eedc] w-full px-6 py-4 text-left text-lg md:hidden"
                 }
                 onClick={handleNavClick}
             >
                 {/* Menu */}
-                <ul className="flex flex-col space-y-2">
+                <ul className="flex flex-col space-y-3">
                     <li className="cursor-pointer">Recipes</li>
-                    <li className="cursor-pointer">Healthy</li>
-                    <li className="cursor-pointer">Baking</li>
+                    <li className="cursor-pointer">Quick Recipes</li>
+                    <li className="cursor-pointer">Cuisines</li>
                 </ul>
                 <div className="border border-b-yellow-300 my-3"></div>
                 {/* User */}
                 <div>
                     {user ? (
                         <div>
-                            <ul className="flex flex-col space-y-2">
+                            <ul className="flex flex-col space-y-3">
                                 <li className="cursor-pointer">Profile</li>
-                                <li className="cursor-pointer">
-                                    Notifications
+                                <li
+                                    onClick={() => navigate("/recipes/new")}
+                                    className="cursor-pointer"
+                                >
+                                    Add
                                 </li>
                                 <li className="cursor-pointer">Logout</li>
                             </ul>
