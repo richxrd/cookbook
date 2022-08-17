@@ -10,8 +10,8 @@ const CategoryCard = ({ title, author, image }) => {
             <div className="flex flex-col w-full">
                 <p className="text-lg truncate">{title}</p>
                 <div>
-                    <span className="text-md text-gray-600">By </span>
-                    <span className="text-md text-[#ecb390]">{author}</span>
+                    <span className="text-sm text-gray-600">By </span>
+                    <span className="text-sm text-[#ecb390]">{author}</span>
                 </div>
             </div>
         </div>

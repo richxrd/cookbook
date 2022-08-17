@@ -15,7 +15,7 @@ const Comment = ({ review }) => {
                     <p className="text-[#96ceb4]">Rating: {rate}/5</p>
                 </div>
             </div>
-            <p className="text-md text-slate-700">{comment}</p>
+            <p className="text-sm text-slate-700">{comment}</p>
             <div className="flex space-x-1 items-center text-gray-400">
                 <ThumbUpIcon className="h-4 cursor-pointer hover:text-green-400" />
                 <p className="text-sm">Helpful ({likes})</p>
