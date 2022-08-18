@@ -10,6 +10,7 @@ const NutrionInput = ({ title, measurement, handleChange }) => {
                     type="number"
                     className="p-2 w-20 h-6 bg-green-100 border-none focus:ring-0 text-end"
                     onChange={handleChange}
+                    required
                 />
                 <span>{measurement}</span>
             </div>
