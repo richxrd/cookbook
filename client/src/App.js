@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Recipe from "./pages/Recipe";
+import NewRecipe from "./pages/NewRecipe";
 
 const App = () => {
     return (
@@ -14,7 +15,8 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/recipe" element={<Recipe />} />
+                <Route path="/recipes" element={<Recipe />} />
+                <Route path="/recipes/new" element={<NewRecipe />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <Footer />
