@@ -46,11 +46,14 @@ const Navbar = () => {
                         <div className="cursor-pointer">
                             <div>
                                 <ul className="flex items-center space-x-4">
-                                    <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                                    <li
+                                        onClick={() => navigate("/profile")}
+                                        className="cursor-pointer hover:text-[#d9534f] transition duration-200"
+                                    >
                                         Profile
                                     </li>
                                     <li
-                                        onClick={() => navigate("/recipes/new")}
+                                        onClick={() => navigate("/new")}
                                         className="cursor-pointer hover:text-[#d9534f] transition duration-200"
                                     >
                                         Add
@@ -105,9 +108,14 @@ const Navbar = () => {
                     {user ? (
                         <div>
                             <ul className="flex flex-col space-y-3">
-                                <li className="cursor-pointer">Profile</li>
                                 <li
-                                    onClick={() => navigate("/recipes/new")}
+                                    onClick={() => navigate("/profile")}
+                                    className="cursor-pointer"
+                                >
+                                    Profile
+                                </li>
+                                <li
+                                    onClick={() => navigate("/new")}
                                     className="cursor-pointer"
                                 >
                                     Add
