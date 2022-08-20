@@ -9,13 +9,17 @@ const Rating = ({ ratingsList }) => {
     };
 
     return (
-        <div className="flex space-x-6 text-gray-600">
+        <div className="flex space-x-6 text-gray-600 italic">
             {!isNaN(avgRating(ratingsList)) ? (
                 <p>Rating: {avgRating(ratingsList)}/5</p>
             ) : (
                 <p>No Ratings</p>
             )}
-            <p>{ratingsList.length} Reviews</p>
+            {!isNaN(avgRating(ratingsList)) ? (
+                <p>{ratingsList.length} Reviews</p>
+            ) : (
+                <p>No Reviews</p>
+            )}
         </div>
     );
 };
