@@ -7,7 +7,7 @@ const Direction = ({ index, direction }) => {
             <h1 className="capitalize font-medium text-[#d9534f] text-lg">
                 Step {stepNumber}
             </h1>
-            <p className="text-lg">{direction}</p>
+            <p className="text-base">{direction}</p>
         </div>
     );
 };
