@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Recipe from "./pages/Recipe";
 import NewRecipe from "./pages/NewRecipe";
+import Profile from "./pages/Profile";
 
 const App = () => {
     return (
@@ -16,7 +17,8 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/recipes" element={<Recipe />} />
-                <Route path="/recipes/new" element={<NewRecipe />} />
+                <Route path="/new" element={<NewRecipe />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <Footer />
