@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
 import AppIcon from "../assets/icon.png";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Navbar = () => {
     const [nav, setNav] = useState(false);
-    const [user, setUser] = useState(true);
+    const [user, setUser] = useState(
+        JSON.parse(localStorage.getItem("profile"))
+    );
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const location = useLocation();
 
     const handleNavClick = () => setNav(!nav);
     const handleHomeBtn = () => {
         navigate("/");
     };
+
+    const handleLogout = () => {
+        dispatch({ type: "LOGOUT" });
+        navigate("/");
+        setUser(null);
+    };
+
+    useEffect(() => {
+        setUser(JSON.parse(localStorage.getItem("profile")));
+    }, [location]);
+
     return (
         <div className="w-full bg-[#f5eedc] h-24 fixed drop-shadow-lg z-10">
             <div className="flex h-full items-center justify-between mx-auto px-6 max-w-screen-xl ">
@@ -58,7 +74,10 @@ const Navbar = () => {
                                     >
                                         Add
                                     </li>
-                                    <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                                    <li
+                                        onClick={handleLogout}
+                                        className="cursor-pointer hover:text-[#d9534f] transition duration-200"
+                                    >
                                         Logout
                                     </li>
                                 </ul>
