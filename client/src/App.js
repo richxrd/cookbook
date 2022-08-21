@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -11,18 +11,20 @@ import Profile from "./pages/Profile";
 
 const App = () => {
     return (
-        <div className="font-sans">
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/recipes" element={<Recipe />} />
-                <Route path="/new" element={<NewRecipe />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-            <Footer />
-        </div>
+        <BrowserRouter>
+            <div className="font-sans">
+                <Navbar />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/recipes" element={<Recipe />} />
+                    <Route path="/new" element={<NewRecipe />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+                <Footer />
+            </div>
+        </BrowserRouter>
     );
 };
 
