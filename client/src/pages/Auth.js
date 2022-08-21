@@ -1,9 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { GoogleLogin } from "react-google-login";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { signin } from "../store/user/userActions";
 
 import bgImg from "../assets/authHero.PNG";
 import icon from "../assets/icon.png";
 
 const Auth = () => {
+    const [user, setUser] = useState(
+        useSelector((state) => state.user.userData?.result)
+    );
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const googleSuccess = async (res) => {
+        const result = res?.profileObj;
+        const token = res?.tokenId;
+
+        const { imageUrl } = result;
+        let imageSplit = imageUrl.split("=s");
+        const image = imageSplit[0] + "=s1000";
+
+        const formData = {
+            googleId: result.googleId,
+            name: result.name,
+            image: image,
+            email: result.email,
+            bio: "User has no bio",
+            token: token,
+        };
+
+        dispatch(signin(formData, navigate));
+    };
+
+    const googleFailure = async (res) => {
+        console.log("Google Sign in was unsuccessful");
+    };
+
+    useEffect(() => {
+        if (user) {
+            navigate("/profile");
+        }
+    });
+
     return (
         <div
             className=""
@@ -21,7 +62,23 @@ const Auth = () => {
                         CookBook
                     </h1>
                     <div className="w-full py-20 text-center">
-                        Log In With Google
+                        <GoogleLogin
+                            clientId="878429723573-ilbeo51e3q9loiga5ik5t833ntrvsuil.apps.googleusercontent.com"
+                            render={(renderProps) => (
+                                <button
+                                    type="button"
+                                    className="px-8 py-4 bg-green-200 rounded-lg shadow-lg hover:bg-green-400 transition duration-200"
+                                    onClick={renderProps.onClick}
+                                    disabled={renderProps.disabled}
+                                >
+                                    Sign In with Google
+                                </button>
+                            )}
+                            buttonText="Login"
+                            onSuccess={googleSuccess}
+                            onFailure={googleFailure}
+                            cookiePolicy="single_host_origin"
+                        />
                     </div>
                 </div>
             </div>
