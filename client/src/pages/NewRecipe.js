@@ -440,7 +440,7 @@ const NewRecipe = () => {
                     Tags
                     <span className="text-sm italic text-gray-500">
                         {" "}
-                        (Breakfast, dinner, healthy, etc)
+                        (Breakfast, vegetarian, healthy, etc)
                     </span>
                 </h1>
                 <div className="border border-green-200 p-2 rounded-lg max-w-full flex items-center flex-wrap gap-2">
