@@ -436,7 +436,13 @@ const NewRecipe = () => {
 
             {/* Tags */}
             <div>
-                <h1 className="text-lg font-semibold py-2">Tags</h1>
+                <h1 className="text-lg font-semibold py-2">
+                    Tags
+                    <span className="text-sm italic text-gray-500">
+                        {" "}
+                        (Breakfast, dinner, healthy, etc)
+                    </span>
+                </h1>
                 <div className="border border-green-200 p-2 rounded-lg max-w-full flex items-center flex-wrap gap-2">
                     {formData.tags.map((tag, index) => (
                         <TagsInput
@@ -493,7 +499,7 @@ const NewRecipe = () => {
                     type="submit"
                     className="bg-green-400 py-4 rounded-md text-xl font-semibold text-white transition duration-200 hover:bg-green-300 hover:text-black"
                 >
-                    Submit
+                    Submit Recipe
                 </button>
             </div>
         </form>
