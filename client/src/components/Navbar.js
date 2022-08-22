@@ -63,7 +63,11 @@ const Navbar = () => {
                             <div>
                                 <ul className="flex items-center space-x-4">
                                     <li
-                                        onClick={() => navigate("/profile")}
+                                        onClick={() =>
+                                            navigate(
+                                                `/user/${user?.result?.uniqueId}`
+                                            )
+                                        }
                                         className="cursor-pointer hover:text-[#d9534f] transition duration-200"
                                     >
                                         Profile
@@ -128,7 +132,9 @@ const Navbar = () => {
                         <div>
                             <ul className="flex flex-col space-y-3">
                                 <li
-                                    onClick={() => navigate("/profile")}
+                                    onClick={() =>
+                                        navigate(`/user/${user.uniqueId}`)
+                                    }
                                     className="cursor-pointer"
                                 >
                                     Profile
@@ -139,7 +145,12 @@ const Navbar = () => {
                                 >
                                     Add
                                 </li>
-                                <li className="cursor-pointer">Logout</li>
+                                <li
+                                    onClick={handleLogout}
+                                    className="cursor-pointer"
+                                >
+                                    Logout
+                                </li>
                             </ul>
                         </div>
                     ) : (
