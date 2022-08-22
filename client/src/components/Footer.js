@@ -6,7 +6,7 @@ const Footer = () => {
             <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-4 border-b-2 border-b-yellow-300 px-6 py-8">
                 <div>
                     <h1 className="font-bold uppercase pt-2">Diets</h1>
-                    <ul>
+                    <ul className="text-sm">
                         <li className="py-1">Mediterranean</li>
                         <li className="py-1">Paleo</li>
                         <li className="py-1">Whole 30</li>
@@ -16,7 +16,7 @@ const Footer = () => {
                 </div>
                 <div>
                     <h1 className="font-bold uppercase pt-2">Cuisines</h1>
-                    <ul>
+                    <ul className="text-sm">
                         <li className="py-1">American</li>
                         <li className="py-1">Chinese</li>
                         <li className="py-1">Indian</li>
@@ -26,14 +26,14 @@ const Footer = () => {
                 </div>
                 <div>
                     <h6 className="font-bold uppercase pt-2">Get to Know Us</h6>
-                    <ul>
+                    <ul className="text-sm">
                         <li className="py-1">About</li>
                         <li className="py-1">Github</li>
                     </ul>
                 </div>
                 <div>
                     <h6 className="font-bold uppercase pt-2">Legal</h6>
-                    <ul>
+                    <ul className="text-sm">
                         <li className="py-1">Privacy</li>
                         <li className="py-1">Terms</li>
                         <li className="py-1">Policies</li>
@@ -43,7 +43,7 @@ const Footer = () => {
             </div>
 
             <div className="flex flex-col max-w-[1240px] px-2 py-4 mx-auto justify-between sm:flex-row text-center text-gray-800">
-                <p className="py-4">Created by Richard Lin</p>
+                <p className="py-4 text-xs">Created by Richard Lin</p>
                 <div className="flex justify-between sm:w-[300px] pt-4 text-2xl"></div>
             </div>
         </div>
