@@ -17,3 +17,10 @@ export const updatebio = (newBio, navigate) => async (dispatch) => {
         navigate(0);
     } catch (error) {}
 };
+
+export const getUser = (uniqueId) => async (dispatch) => {
+    try {
+        const { data } = await api.fetchUser(uniqueId);
+        dispatch({ type: "GET_USER", data });
+    } catch (error) {}
+};
