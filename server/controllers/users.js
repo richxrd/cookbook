@@ -1,3 +1,4 @@
+import { customAlphabet } from "nanoid";
 import User from "../models/user.js";
 
 export const signin = async (req, res) => {
@@ -9,19 +10,19 @@ export const signin = async (req, res) => {
         const existingUser = await User.findOne({ email });
 
         if (!existingUser) {
+            let nanoid = customAlphabet(
+                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+                10
+            );
+
+            let count = await User.count();
+
             const newUser = new User({
                 ...formData,
+                uniqueId: nanoid() + count,
             });
 
             await newUser.save();
-
-            // const result = await User.create({
-            //     email,
-            //     name,
-            //     image,
-            //     googleId,
-            //     bio,
-            // });
 
             res.status(200).json({ result: newUser, token });
         } else {
@@ -47,5 +48,18 @@ export const updateBio = async (req, res) => {
         );
 
         res.status(200).json({ result: updatedUser });
-    } catch (error) {}
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};
+
+export const fetchUser = async (req, res) => {
+    const { uniqueId } = req.params;
+
+    try {
+        const foundUser = await User.findOne({ uniqueId: uniqueId });
+        res.status(200).json({ result: foundUser });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
 };

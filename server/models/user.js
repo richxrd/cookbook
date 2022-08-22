@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
+    uniqueId: { type: String, required: true },
     googleId: { type: String, required: true },
     name: { type: String, required: true },
     image: { type: String, required: true },
