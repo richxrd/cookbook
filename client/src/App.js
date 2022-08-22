@@ -8,6 +8,7 @@ import Auth from "./pages/Auth";
 import Recipe from "./pages/Recipe";
 import NewRecipe from "./pages/NewRecipe";
 import Profile from "./pages/Profile";
+import Collections from "./pages/Collections";
 
 const App = () => {
     return (
@@ -19,7 +20,11 @@ const App = () => {
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/recipes" element={<Recipe />} />
                     <Route path="/new" element={<NewRecipe />} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/user/:uniqueId" element={<Profile />} />
+                    <Route
+                        path="/user/:uniqueId/collection/:collectionId"
+                        element={<Collections />}
+                    />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
                 <Footer />
