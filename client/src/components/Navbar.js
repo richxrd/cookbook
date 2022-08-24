@@ -31,7 +31,7 @@ const Navbar = () => {
     }, [location]);
 
     return (
-        <div className="w-full bg-[#f5eedc] h-24 fixed drop-shadow-lg z-10">
+        <div className="w-full bg-[#f5eedc] h-24 fixed drop-shadow-lg z-20">
             <div className="flex h-full items-center justify-between mx-auto px-6 max-w-screen-xl ">
                 {/* Icon */}
                 <div
@@ -65,7 +65,7 @@ const Navbar = () => {
                                     <li
                                         onClick={() =>
                                             navigate(
-                                                `/user/${user?.result?.uniqueId}`
+                                                `/user/${user?.authData?.result?.uniqueId}`
                                             )
                                         }
                                         className="cursor-pointer hover:text-[#d9534f] transition duration-200"
@@ -133,7 +133,9 @@ const Navbar = () => {
                             <ul className="flex flex-col space-y-3">
                                 <li
                                     onClick={() =>
-                                        navigate(`/user/${user.uniqueId}`)
+                                        navigate(
+                                            `/user/${user?.authData?.result?.uniqueId}`
+                                        )
                                     }
                                     className="cursor-pointer"
                                 >
