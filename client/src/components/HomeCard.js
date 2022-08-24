@@ -11,7 +11,7 @@ const HomeCard = ({ recipe }) => {
     };
 
     return (
-        <div className="flex flex-col w-full h-fit md:h-72 shadow-xl md:flex-row hover:brightness-125 transition duration-200 cursor-pointer">
+        <div className="flex flex-col w-full h-fit md:h-72 shadow-md md:flex-row hover:shadow-xl hover:scale-[1.005] transition duration-200 cursor-pointer">
             {/* Image */}
             <img
                 src={recipe.image}
