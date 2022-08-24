@@ -15,7 +15,10 @@ API.interceptors.request.use((req) => {
 });
 
 export const signIn = (formData) => API.post("/users/signin", formData);
-
 export const updateBio = (newBio) => API.patch("/users/updatebio", newBio);
-
 export const fetchUser = (uniqueId) => API.get(`/users/${uniqueId}`);
+export const addCollection = (collectionForm) =>
+    API.patch(`users/newcollection`, collectionForm);
+export const deleteCollection = (collectionForm) =>
+    API.patch(`users/deletecollection`, collectionForm);
+export const followUser = (form) => API.patch(`users/followuser`, form);
