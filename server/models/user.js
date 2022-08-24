@@ -7,25 +7,37 @@ const userSchema = mongoose.Schema({
     image: { type: String, required: true },
     email: { type: String, required: true },
     bio: { type: String, required: true },
-    followers: {
-        type: [String],
-        default: [],
-    },
-    following: {
-        type: [String],
-        default: [],
-    },
+    followers: [
+        {
+            name: { type: String },
+            uniqueId: { type: String },
+            image: { type: String },
+        },
+    ],
+    following: [
+        {
+            name: { type: String },
+            uniqueId: { type: String },
+            image: { type: String },
+        },
+    ],
     recipesMade: {
         type: [String],
         default: [],
     },
     collections: [
         {
-            id: { type: [String] },
+            name: { type: String },
             recipes: {
                 type: [String],
                 default: [],
             },
+        },
+    ],
+    likes: [
+        {
+            type: [String],
+            default: [],
         },
     ],
 });
