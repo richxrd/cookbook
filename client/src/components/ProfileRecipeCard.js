@@ -1,28 +1,33 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Rating from "../components/Rating";
 
 const ProfileRecipeCard = ({ recipe }) => {
     const { title, image, reviews } = recipe;
 
-    return (
-        <div className="flex flex-col space-y-2 h-fit shadow-xl bg-green-200">
-            {/* img */}
-            <img src={image} alt="" className="object-cover w-full h-72" />
+    const navigate = useNavigate();
 
-            <div className="px-2 text-sm">
+    return (
+        <div className="flex flex-col h-fit shadow-xl bg-green-200 cursor-pointer relative group">
+            {/* img */}
+            <img
+                src={image}
+                alt=""
+                className="object-cover w-full h-72"
+                onClick={() => navigate(`/${recipe._id}`)}
+            />
+
+            <div
+                className="p-2 text-sm absolute bottom-0 bg-green-200 w-full"
+                onClick={() => navigate(`/${recipe._id}`)}
+            >
                 <h2 className="text-base font-semibold truncate">{title}</h2>
                 <Rating ratingsList={Object.entries(reviews)} full />
             </div>
 
-            <div className="flex">
+            <div className="absolute p-2 top-0 right-0 opacity-0 group-hover:opacity-100 transition duration-200">
                 <button
-                    className="w-full py-2 bg-green-300 hover:bg-green-400"
-                    onClick={() => console.log("View")}
-                >
-                    View
-                </button>
-                <button
-                    className="w-full py-2 bg-[#ecb390] hover:bg-[#d9534f]"
+                    className="w-full p-2 rounded-xl bg-[#ecb390] hover:bg-[#d9534f] bg-opacity-60"
                     onClick={() => console.log("Edit")}
                 >
                     Edit
