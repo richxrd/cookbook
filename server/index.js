@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import userRoutes from "./routes/users.js";
+import postsRoutes from "./routes/posts.js";
 
 const app = express();
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 
 app.use("/users", userRoutes);
+app.use("/posts", postsRoutes);
 
 app.get("/", (req, res) => {
     res.send("App is running");
