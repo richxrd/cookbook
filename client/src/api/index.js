@@ -22,3 +22,6 @@ export const addCollection = (collectionForm) =>
 export const deleteCollection = (collectionForm) =>
     API.patch(`users/deletecollection`, collectionForm);
 export const followUser = (form) => API.patch(`users/followuser`, form);
+
+export const newPost = (formData) => API.post("/posts/newpost", formData);
+export const fetchPost = (id) => API.get(`/posts/get/${id}`);
