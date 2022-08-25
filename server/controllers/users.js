@@ -1,4 +1,5 @@
 import { customAlphabet } from "nanoid";
+import Post from "../models/posts.js";
 import User from "../models/user.js";
 
 export const signin = async (req, res) => {
@@ -58,7 +59,11 @@ export const fetchUser = async (req, res) => {
 
     try {
         const foundUser = await User.findOne({ uniqueId: uniqueId });
-        res.status(200).json({ result: foundUser });
+
+        const recipes = foundUser.recipesMade;
+        const recipesFound = await Post.find({ _id: { $in: recipes } });
+
+        res.status(200).json({ result: foundUser, recipes: recipesFound });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
