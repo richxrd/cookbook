@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 
 import { DIETS } from "../Diets";
@@ -7,13 +8,19 @@ import IngredientInput from "../components/IngredientInput";
 import NutrionInput from "../components/NutrionInput";
 import { PlusIcon } from "@heroicons/react/outline";
 import TagsInput from "../components/TagsInput";
+import { newPost } from "../store/posts/postsActions";
+import DirectionsInput from "../components/DirectionsInput";
+import { useNavigate } from "react-router-dom";
 
 const DEFAULT_FORM = {
     title: "",
     description: "",
+    author: "",
+    authorId: "",
+    authorUniqueId: "",
     tags: [],
     diets: [],
-    cuisines: "",
+    cuisine: "",
     image: "",
     time: {
         prep: "",
@@ -38,6 +45,31 @@ const NewRecipe = () => {
     const [formData, setFormData] = useState(DEFAULT_FORM);
     const [newIngredientName, setNewIngredientName] = useState("");
     const [newIngredientQuantity, setNewIngredientQuantity] = useState("");
+    const [newDirection, setNewDirection] = useState("");
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useSelector((state) => state.posts.recipeData);
+
+    const auth = useSelector((state) => state.user?.authData?.result);
+    const submittedPost = useSelector((state) => state.posts.newRecipe);
+
+    useEffect(() => {
+        dispatch({ type: "CLEAR_NEW_POST" });
+        setFormData({
+            ...formData,
+            author: auth.name,
+            authorId: auth._id,
+            authorUniqueId: auth.uniqueId,
+        });
+    }, []);
+
+    useEffect(() => {
+        if (submittedPost) {
+            navigate(`/${submittedPost._id}`);
+        }
+    }, [submittedPost]);
 
     const handleTimeChange = (e) => {
         setFormData({
@@ -107,15 +139,69 @@ const NewRecipe = () => {
     };
 
     const handleNewIngredient = (e) => {
+        if (newIngredientName.length === 0) {
+            const newIngredient = document.getElementById("newIngredient");
+            newIngredient.setCustomValidity("Ingredient must not be empty");
+            newIngredient.reportValidity();
+        } else {
+            e.preventDefault();
+            setFormData({
+                ...formData,
+                ingredients: {
+                    ...formData.ingredients,
+                    [newIngredientName]: newIngredientQuantity,
+                },
+            });
+            resetIngredientForm();
+        }
+    };
+
+    const handleDirectionKeydown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+        }
+    };
+
+    const handleNewDirectionChange = (e) => {
+        const newDirection = document.getElementById("newDirection");
+        newDirection.setCustomValidity("");
+        setNewDirection(e.target.value);
+    };
+
+    const handleNewDirection = (e) => {
         e.preventDefault();
+
+        if (newDirection.length === 0) {
+            const newDirection = document.getElementById("newDirection");
+            newDirection.setCustomValidity("Direction must not be empty");
+            newDirection.reportValidity();
+        } else {
+            setFormData({
+                ...formData,
+                directions: [...formData.directions, newDirection],
+            });
+
+            setNewDirection("");
+        }
+    };
+
+    const handleDirectionChange = (e) => {
+        const directions = [...formData.directions];
+        directions[e.target.name] = e.target.value;
+
         setFormData({
             ...formData,
-            ingredients: {
-                ...formData.ingredients,
-                [newIngredientName]: newIngredientQuantity,
-            },
+            directions: directions,
         });
-        resetIngredientForm();
+    };
+
+    const handleDeleteDirection = (e) => {
+        const directions = [...formData.directions];
+        directions.splice(e.target.id, 1);
+        setFormData({
+            ...formData,
+            directions: directions,
+        });
     };
 
     const handleTagKeyDown = (e) => {
@@ -149,10 +235,12 @@ const NewRecipe = () => {
     };
 
     const handleCuisineChange = (e) => {
-        setFormData({ ...formData, cuisines: e.value });
+        setFormData({ ...formData, cuisine: e.value });
     };
     const handleDietChange = (e) => {
-        setFormData({ ...formData, diets: [...formData.diets, e.value] });
+        const selectedDiets = [];
+        e.forEach((diet) => selectedDiets.push(diet.value));
+        setFormData({ ...formData, diets: [...selectedDiets] });
     };
 
     const handleImageUpload = (e) => {
@@ -183,9 +271,13 @@ const NewRecipe = () => {
                 "Please add at least one ingredient."
             );
             newIngredient.reportValidity();
+        } else if (formData.directions.length === 0) {
+            let newDirection = document.getElementById("newDirection");
+            newDirection.setCustomValidity("Please add at least one direction");
+            newDirection.reportValidity();
+        } else {
+            dispatch(newPost(formData));
         }
-
-        console.log(formData);
     };
 
     return (
@@ -360,7 +452,7 @@ const NewRecipe = () => {
                             />
                             <button
                                 type="button"
-                                className="cursor-pointer select-none text-green-500"
+                                className="cursor-pointer select-none px-4 text-green-500"
                                 onClick={handleNewIngredient}
                             >
                                 <PlusIcon className="w-[20px]" />
@@ -434,6 +526,46 @@ const NewRecipe = () => {
                 </div>
             </div>
 
+            {/* Directions */}
+            <div className="flex flex-col space-y-2">
+                <h1 className="text-lg font-semibold py-2">
+                    Directions{" "}
+                    <span className="text-sm text-red-600">(Required)</span>
+                </h1>
+
+                {formData.directions.map((direction, index) => {
+                    return (
+                        <DirectionsInput
+                            key={index}
+                            direction={direction}
+                            index={index}
+                            handleChange={handleDirectionChange}
+                            deleteDirection={handleDeleteDirection}
+                        />
+                    );
+                })}
+
+                <div
+                    className="flex space-x-1 py-2 items-center justify-between tracking-wide font-light pl-1 pr-2 bg-yellow-200"
+                    onKeyDown={handleDirectionKeydown}
+                >
+                    <input
+                        className="bg-yellow-100 p-2 w-full text-sm outline-none border-2 border-transparent focus:border-yellow-300"
+                        placeholder="Enter Direction"
+                        value={newDirection}
+                        onChange={handleNewDirectionChange}
+                        id="newDirection"
+                    />
+                    <button
+                        type="button"
+                        className="cursor-pointer select-none px-4"
+                        onClick={handleNewDirection}
+                    >
+                        <PlusIcon className="w-[20px]" />
+                    </button>
+                </div>
+            </div>
+
             {/* Tags */}
             <div>
                 <h1 className="text-lg font-semibold py-2">
@@ -465,14 +597,14 @@ const NewRecipe = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                     <label htmlFor="prep" className="text-lg font-semibold">
-                        Cuisines
+                        Cuisine
                     </label>
                     <Select
-                        name="diets"
+                        name="cuisine"
                         options={CUISINES}
                         className="w-full"
                         isSearchable={false}
-                        placeholder="Select Diet"
+                        placeholder="Select Cuisine"
                         onChange={handleCuisineChange}
                     />
                 </div>
