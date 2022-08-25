@@ -1,4 +1,7 @@
-const userReducer = (state = { authData: null, userData: null }, action) => {
+const userReducer = (
+    state = { authData: null, userData: null, recipes: null },
+    action
+) => {
     switch (action.type) {
         case "AUTH":
             localStorage.setItem(
@@ -29,12 +32,18 @@ const userReducer = (state = { authData: null, userData: null }, action) => {
                 "profile",
                 JSON.stringify({
                     ...state,
-                    userData: { result: action?.data.result },
+                    userData: {
+                        result: action?.data.result,
+                        recipes: action?.data.recipes,
+                    },
                 })
             );
             return {
                 ...state,
-                userData: { result: action?.data.result },
+                userData: {
+                    result: action?.data.result,
+                    recipes: action?.data.recipes,
+                },
             };
         case "FOLLOW":
             localStorage.setItem(
