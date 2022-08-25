@@ -27,6 +27,7 @@ const Navbar = () => {
     };
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         setUser(JSON.parse(localStorage.getItem("profile")));
     }, [location]);
 
