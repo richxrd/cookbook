@@ -8,12 +8,12 @@ const ProfileRecipeCard = ({ recipe }) => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col h-fit shadow-xl bg-green-200 cursor-pointer relative group">
+        <div className="flex flex-col h-fit shadow-lg bg-green-200 cursor-pointer relative group hover:scale-[1.02] hover:shadow-2xl transition duration-200">
             {/* img */}
             <img
                 src={image}
                 alt=""
-                className="object-cover w-full h-72"
+                className="object-cover w-full h-80"
                 onClick={() => navigate(`/${recipe._id}`)}
             />
 
