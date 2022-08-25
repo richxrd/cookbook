@@ -19,7 +19,7 @@ const IngredientInput = ({
                 <div
                     id={title}
                     onClick={deleteIngredient}
-                    className="cursor-pointer select-none text-red-500"
+                    className="cursor-pointer select-none text-red-500 px-4"
                 >
                     [x]
                 </div>
