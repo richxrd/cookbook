@@ -25,6 +25,7 @@ const Profile = () => {
 
     const userData = useSelector((state) => state.user?.userData?.result); // Get updates to userData
     const authData = useSelector((state) => state.user?.authData?.result);
+    const recipesFound = useSelector((state) => state.user?.userData.recipes);
 
     const { uniqueId } = useParams(); // User uniqueId
     const dispatch = useDispatch();
@@ -34,7 +35,6 @@ const Profile = () => {
         dispatch(getUser(uniqueId));
         setProfileView("recipes");
         if (userData) {
-            setRecipes([...userData?.recipesMade?.sort((a, b) => b.id - a.id)]);
             setUserBio(userData?.bio);
         }
     }, [uniqueId]);
@@ -42,8 +42,18 @@ const Profile = () => {
     useEffect(() => {}, [userData]);
 
     useEffect(() => {}, [authData]);
-
     useEffect(() => {}, [recipes]);
+    useEffect(() => {
+        if (recipesFound) {
+            setRecipes(recipesFound);
+            const orderedRecipes = [
+                ...recipesFound.sort(
+                    (a, b) => new Date(b.date) - new Date(a.date)
+                ),
+            ];
+            setRecipes(orderedRecipes);
+        }
+    }, [recipesFound]);
 
     const handleEditBioBtn = (e) => {
         setEditBio(!editBio);
@@ -106,10 +116,14 @@ const Profile = () => {
             ];
             setRecipes(newRecipes);
         } else if (e.value === "newest") {
-            const newRecipes = [...recipes.sort((a, b) => b.id - a.id)];
+            const newRecipes = [
+                ...recipes.sort((a, b) => new Date(b.date) - new Date(a.date)),
+            ];
             setRecipes(newRecipes);
         } else if (e.value === "oldest") {
-            const newRecipes = [...recipes.sort((a, b) => a.id - b.id)];
+            const newRecipes = [
+                ...recipes.sort((a, b) => new Date(a.date) - new Date(b.date)),
+            ];
             setRecipes(newRecipes);
         }
     };
@@ -318,7 +332,7 @@ const Profile = () => {
                             recipes.map((recipe) => {
                                 return (
                                     <ProfileRecipeCard
-                                        key={recipe.id}
+                                        key={recipe._id}
                                         recipe={recipe}
                                     />
                                 );
