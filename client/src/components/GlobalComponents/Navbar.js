@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
-import AppIcon from "../assets/icon.png";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+
+import AppIcon from "../../assets/icon.png";
+import { resetStore } from "../../store/store";
 
 const Navbar = () => {
     const [nav, setNav] = useState(false);
@@ -22,6 +23,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         dispatch({ type: "LOGOUT" });
+        resetStore();
         navigate("/");
         setUser(null);
     };

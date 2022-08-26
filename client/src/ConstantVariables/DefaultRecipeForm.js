@@ -1,0 +1,28 @@
+export const DEFAULT_FORM = {
+    title: "",
+    description: "",
+    author: "",
+    authorId: "",
+    authorUniqueId: "",
+    tags: [],
+    diets: [],
+    cuisine: "",
+    image: "",
+    time: {
+        prep: "",
+        cook: "",
+    },
+    servings: "",
+    ingredients: {},
+    directions: [],
+    nutrition: {
+        calories: "",
+        fat: "",
+        satFat: "",
+        sodium: "",
+        protein: "",
+        carbohydrates: "",
+        sugar: "",
+        cholesterol: "",
+    },
+};

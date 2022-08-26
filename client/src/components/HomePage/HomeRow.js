@@ -1,7 +1,7 @@
 import React from "react";
 import HomeCard from "./HomeCard";
 
-import TEST_DATA from "../testData";
+import TEST_DATA from "../../testData";
 
 const HomeRow = ({ category }) => {
     return (

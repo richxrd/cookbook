@@ -11,12 +11,12 @@ const HomeCard = ({ recipe }) => {
     };
 
     return (
-        <div className="flex flex-col w-full h-fit md:h-72 shadow-md md:flex-row hover:shadow-xl hover:scale-[1.005] transition duration-200 cursor-pointer">
+        <div className="flex flex-col w-full h-fit md:h-60 shadow-md md:flex-row hover:shadow-xl hover:scale-[1.005] transition duration-200 cursor-pointer">
             {/* Image */}
             <img
                 src={recipe.image}
                 alt=""
-                className="object-cover w-full h-60 md:w-[15rem] md:h-72"
+                className="object-cover w-full h-60 md:w-[12rem] md:h-full"
             />
 
             <div className="flex flex-col justify-between p-4 space-y-4 w-full md:w-[calc(100%-15rem)]">
@@ -25,7 +25,7 @@ const HomeCard = ({ recipe }) => {
                         {recipe.title}
                     </h1>
 
-                    <p className="font-light text-ellipsis overflow-y-hidden line-clamp-4">
+                    <p className="font-light text-ellipsis overflow-y-hidden line-clamp-3">
                         {recipe.description}
                     </p>
                 </div>
