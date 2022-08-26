@@ -137,25 +137,21 @@ const Profile = () => {
     // Render Helpers
     const renderFollowerCards = () => {
         return (
-            userData?.followers?.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {userData.followers.map((id) => {
-                        return <FollowCard key={id} id={id} />;
-                    })}
-                </div>
-            )
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {userData.followers.map((id) => {
+                    return <FollowCard key={id} id={id} />;
+                })}
+            </div>
         );
     };
 
     const renderFollowingCards = () => {
         return (
-            userData?.following?.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {userData.following.map((id) => {
-                        return <FollowCard key={id} id={id} />;
-                    })}
-                </div>
-            )
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {userData.following.map((id) => {
+                    return <FollowCard key={id} id={id} />;
+                })}
+            </div>
         );
     };
 
