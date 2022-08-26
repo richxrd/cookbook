@@ -7,20 +7,14 @@ const userSchema = mongoose.Schema({
     image: { type: String, required: true },
     email: { type: String, required: true },
     bio: { type: String, required: true },
-    followers: [
-        {
-            name: { type: String },
-            uniqueId: { type: String },
-            image: { type: String },
-        },
-    ],
-    following: [
-        {
-            name: { type: String },
-            uniqueId: { type: String },
-            image: { type: String },
-        },
-    ],
+    followers: {
+        type: [String],
+        default: [],
+    },
+    following: {
+        type: [String],
+        default: [],
+    },
     recipesMade: {
         type: [String],
         default: [],
