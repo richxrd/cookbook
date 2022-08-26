@@ -34,3 +34,27 @@ export const getPost = async (req, res) => {
         res.status(500).json({ message: "Post not found" });
     }
 };
+
+export const likePost = async (req, res) => {
+    const { userId, postId } = req.body;
+
+    try {
+        const recipe = await Post.findById(postId);
+
+        const index = recipe.likes.findIndex((id) => id === String(userId));
+
+        if (index === -1) {
+            recipe.likes.push(userId);
+        } else {
+            recipe.likes = recipe.likes.filter((id) => id !== String(userId));
+        }
+
+        const updatedRecipe = await Post.findByIdAndUpdate(recipe._id, recipe, {
+            new: true,
+        });
+
+        res.status(200).json({ post: updatedRecipe });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
