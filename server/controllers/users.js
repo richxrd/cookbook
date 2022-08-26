@@ -3,8 +3,7 @@ import Post from "../models/posts.js";
 import User from "../models/user.js";
 
 export const signin = async (req, res) => {
-    const { email, name, image, googleId, bio, token } = req.body;
-
+    const { email, token } = req.body;
     const formData = req.body;
 
     try {
@@ -48,7 +47,7 @@ export const updateBio = async (req, res) => {
             { new: true }
         );
 
-        res.status(200).json({ result: updatedUser });
+        res.status(200).json({ user: updatedUser });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -59,10 +58,23 @@ export const fetchUser = async (req, res) => {
 
     try {
         const foundUser = await User.findOne({ uniqueId: uniqueId });
+        const recipesFound = await Post.find({
+            authorId: foundUser._id,
+        });
+        res.status(200).json({ result: foundUser, recipes: recipesFound });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};
 
-        const recipes = foundUser.recipesMade;
-        const recipesFound = await Post.find({ _id: { $in: recipes } });
+export const getUserById = async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const foundUser = await User.findById(id);
+        const recipesFound = await Post.find({
+            authorId: foundUser._id,
+        });
         res.status(200).json({ result: foundUser, recipes: recipesFound });
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -111,25 +123,22 @@ export const followUser = async (req, res) => {
     try {
         const senderUser = await User.findById(sender);
         const receiverUser = await User.findById(receiver);
-
         if (
             senderUser.following.filter(
-                (following) => following.uniqueId === receiverUser.uniqueId
+                (person) => person === receiverUser._id.toString()
             ).length > 0
         ) {
             senderUser.following = senderUser.following.filter(
-                (following) => following.uniqueId !== receiverUser.uniqueId
+                (person) => person !== receiverUser._id.toString()
             );
 
             receiverUser.followers = receiverUser.followers.filter(
-                (following) => following.uniqueId !== senderUser.uniqueId
+                (person) => person !== senderUser._id.toString()
             );
 
-            const updatedSender = await User.findByIdAndUpdate(
-                senderUser._id,
-                senderUser,
-                { new: true }
-            );
+            await User.findByIdAndUpdate(senderUser._id, senderUser, {
+                new: true,
+            });
 
             const updatedReceiver = await User.findByIdAndUpdate(
                 receiverUser._id,
@@ -138,30 +147,15 @@ export const followUser = async (req, res) => {
             );
 
             res.status(200).json({
-                auth: updatedSender,
                 user: updatedReceiver,
             });
         } else {
-            const newFollower = {
-                name: senderUser.name,
-                uniqueId: senderUser.uniqueId,
-                image: senderUser.image,
-            };
+            senderUser.following.push(receiver);
+            receiverUser.followers.push(sender);
 
-            const newFollowing = {
-                name: receiverUser.name,
-                uniqueId: receiverUser.uniqueId,
-                image: receiverUser.image,
-            };
-
-            senderUser.following.push(newFollowing);
-            receiverUser.followers.push(newFollower);
-
-            const updatedSender = await User.findByIdAndUpdate(
-                senderUser._id,
-                senderUser,
-                { new: true }
-            );
+            await User.findByIdAndUpdate(senderUser._id, senderUser, {
+                new: true,
+            });
 
             const updatedReceiver = await User.findByIdAndUpdate(
                 receiverUser._id,
@@ -170,7 +164,6 @@ export const followUser = async (req, res) => {
             );
 
             res.status(200).json({
-                auth: updatedSender,
                 user: updatedReceiver,
             });
         }
