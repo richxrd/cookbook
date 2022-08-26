@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import Select from "react-select";
-import CollectionsCard from "../components/CollectionsCard";
-import FollowCard from "../components/FollowCard";
-import LoadingPage from "../components/LoadingPage";
+import CollectionsCard from "../components/Profile/CollectionsCard";
+import FollowCard from "../components/Profile/FollowCard";
+import LoadingPage from "../components/GlobalComponents/LoadingPage";
 
-import ProfileRecipeCard from "../components/ProfileRecipeCard";
-import {
-    getUser,
-    updatebio,
-    addCollection,
-    followUser,
-} from "../store/user/userActions";
+import ProfileRecipeCard from "../components/Profile/ProfileRecipeCard";
+import { getUser, followUser, updateBio, addCollection } from "../api/user";
 
 const Profile = () => {
     // State Variables
+    const [userData, setUserData] = useState(null);
     const [profileView, setProfileView] = useState("recipes");
     const [recipes, setRecipes] = useState([]);
     const [userBio, setUserBio] = useState("");
@@ -23,37 +19,30 @@ const Profile = () => {
     const [newCollection, setNewCollection] = useState(false);
     const [collectionName, setCollectionName] = useState("");
 
-    const userData = useSelector((state) => state.user?.userData?.result); // Get updates to userData
     const authData = useSelector((state) => state.user?.authData?.result);
-    const recipesFound = useSelector((state) => state.user?.userData.recipes);
 
     const { uniqueId } = useParams(); // User uniqueId
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(getUser(uniqueId));
-        setProfileView("recipes");
-        if (userData) {
-            setUserBio(userData?.bio);
-        }
-    }, [uniqueId]);
+        const getData = async () => {
+            const data = await getUser(uniqueId);
+            setUserData(data.result);
 
-    useEffect(() => {}, [userData]);
-
-    useEffect(() => {}, [authData]);
-    useEffect(() => {}, [recipes]);
-    useEffect(() => {
-        if (recipesFound) {
-            setRecipes(recipesFound);
             const orderedRecipes = [
-                ...recipesFound.sort(
+                ...data.recipes.sort(
                     (a, b) => new Date(b.date) - new Date(a.date)
                 ),
             ];
             setRecipes(orderedRecipes);
-        }
-    }, [recipesFound]);
+            setProfileView("recipes");
+        };
+
+        getData();
+    }, [uniqueId]);
+
+    useEffect(() => {}, [userData]);
+    useEffect(() => {}, [authData]);
+    useEffect(() => {}, [recipes]);
 
     const handleEditBioBtn = (e) => {
         setEditBio(!editBio);
@@ -67,14 +56,16 @@ const Profile = () => {
         setUserBio(e.target.value);
     };
 
-    const handleBioSubmit = (e) => {
+    const handleBioSubmit = async (e) => {
         e.preventDefault();
         setEditBio(false);
         const newBio = {
             googleId: userData?.googleId,
             bio: userBio,
         };
-        dispatch(updatebio(newBio, navigate));
+
+        const data = await updateBio(newBio);
+        setUserData(data.user);
     };
 
     const handleNewCollection = (e) => {
@@ -85,14 +76,15 @@ const Profile = () => {
         setCollectionName(e.target.value);
     };
 
-    const handleNewCollectionSubmit = (e) => {
+    const handleNewCollectionSubmit = async (e) => {
         e.preventDefault();
         const newCollectionForm = {
             googleId: authData.googleId,
             collectionName: collectionName,
         };
         setNewCollection(false);
-        dispatch(addCollection(newCollectionForm, navigate));
+        const data = await addCollection(newCollectionForm);
+        setUserBio(data.result);
     };
 
     const handleProfileView = (e) => {
@@ -111,7 +103,8 @@ const Profile = () => {
         } else if (e.value === "liked") {
             const newRecipes = [
                 ...recipes.sort(
-                    (a, b) => parseInt(b.likes) - parseInt(a.likes)
+                    (a, b) =>
+                        parseInt(b.likes.length) - parseInt(a.likes.length)
                 ),
             ];
             setRecipes(newRecipes);
@@ -134,8 +127,36 @@ const Profile = () => {
             sender: authData._id,
             receiver: userData._id,
         };
+        const follow = async () => {
+            const newUser = await followUser(form);
+            setUserData(newUser.user);
+        };
+        follow();
+    };
 
-        dispatch(followUser(form, navigate));
+    // Render Helpers
+    const renderFollowerCards = () => {
+        return (
+            userData?.followers?.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {userData.followers.map((id) => {
+                        return <FollowCard key={id} id={id} />;
+                    })}
+                </div>
+            )
+        );
+    };
+
+    const renderFollowingCards = () => {
+        return (
+            userData?.following?.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {userData.following.map((id) => {
+                        return <FollowCard key={id} id={id} />;
+                    })}
+                </div>
+            )
+        );
     };
 
     // Helper
@@ -203,13 +224,12 @@ const Profile = () => {
                 </div>
 
                 {/* Follow Button */}
-                {authData.googleId !== userData.googleId && (
+                {authData && authData.googleId !== userData.googleId && (
                     <button
                         type="button"
                         className={`${
                             userData.followers.filter(
-                                (person) =>
-                                    person.uniqueId === authData.uniqueId
+                                (person) => person === authData._id
                             ).length === 0
                                 ? "bg-[#f5eedc] hover:bg-[#ecb390]"
                                 : "hover:bg-[#f5eedc] bg-[#ecb390]"
@@ -217,7 +237,7 @@ const Profile = () => {
                         onClick={handleFollow}
                     >
                         {userData.followers.filter(
-                            (person) => person.uniqueId === authData.uniqueId
+                            (person) => person === authData._id
                         ).length === 0
                             ? "Follow"
                             : "Unfollow"}
@@ -375,19 +395,7 @@ const Profile = () => {
                                 </div>
                             )}
 
-                        {profileView === "followers" &&
-                            userData?.followers?.length > 0 && (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {userData.followers.map((person) => {
-                                        return (
-                                            <FollowCard
-                                                key={person.uniqueId}
-                                                person={person}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            )}
+                        {profileView === "followers" && renderFollowerCards()}
 
                         {/* Following View */}
                         {profileView === "following" &&
@@ -397,19 +405,7 @@ const Profile = () => {
                                 </div>
                             )}
 
-                        {profileView === "following" &&
-                            userData?.following?.length > 0 && (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {userData.following.map((person) => {
-                                        return (
-                                            <FollowCard
-                                                key={person.uniqueId}
-                                                person={person}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            )}
+                        {profileView === "following" && renderFollowingCards()}
                     </div>
                 </div>
             </div>

@@ -1,75 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { PlusIcon } from "@heroicons/react/outline";
 import Select from "react-select";
 
-import { DIETS } from "../Diets";
-import { CUISINES } from "../Cuisines";
-import IngredientInput from "../components/IngredientInput";
-import NutrionInput from "../components/NutrionInput";
-import { PlusIcon } from "@heroicons/react/outline";
-import TagsInput from "../components/TagsInput";
-import { newPost } from "../store/posts/postsActions";
-import DirectionsInput from "../components/DirectionsInput";
-import { useNavigate } from "react-router-dom";
+import DirectionsInput from "../components/RecipeForm/DirectionsInput";
+import IngredientInput from "../components/RecipeForm/IngredientInput";
+import NutrionInput from "../components/RecipeForm/NutrionInput";
+import TagsInput from "../components/RecipeForm/TagsInput";
+import { newPost } from "../api/posts";
+import { uploadImage } from "../api/firebase";
 
-const DEFAULT_FORM = {
-    title: "",
-    description: "",
-    author: "",
-    authorId: "",
-    authorUniqueId: "",
-    tags: [],
-    diets: [],
-    cuisine: "",
-    image: "",
-    time: {
-        prep: "",
-        cook: "",
-    },
-    servings: "",
-    ingredients: {},
-    directions: [],
-    nutrition: {
-        calories: "",
-        fat: "",
-        satFat: "",
-        sodium: "",
-        protein: "",
-        carbohydrates: "",
-        sugar: "",
-        cholesterol: "",
-    },
-};
+import { DIETS } from "../ConstantVariables/Diets";
+import { CUISINES } from "../ConstantVariables/Cuisines";
+import { DEFAULT_FORM } from "../ConstantVariables/DefaultRecipeForm";
 
 const NewRecipe = () => {
     const [formData, setFormData] = useState(DEFAULT_FORM);
+    const [imageName, setImageName] = useState(null);
     const [newIngredientName, setNewIngredientName] = useState("");
     const [newIngredientQuantity, setNewIngredientQuantity] = useState("");
     const [newDirection, setNewDirection] = useState("");
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    useSelector((state) => state.posts.recipeData);
-
     const auth = useSelector((state) => state.user?.authData?.result);
-    const submittedPost = useSelector((state) => state.posts.newRecipe);
-
-    useEffect(() => {
-        dispatch({ type: "CLEAR_NEW_POST" });
-        setFormData({
-            ...formData,
-            author: auth.name,
-            authorId: auth._id,
-            authorUniqueId: auth.uniqueId,
-        });
-    }, []);
-
-    useEffect(() => {
-        if (submittedPost) {
-            navigate(`/${submittedPost._id}`);
-        }
-    }, [submittedPost]);
 
     const handleTimeChange = (e) => {
         setFormData({
@@ -244,26 +198,18 @@ const NewRecipe = () => {
     };
 
     const handleImageUpload = (e) => {
-        new Promise((resolve, reject) => {
-            if (e.target.files[0]) {
-                const reader = new FileReader();
-                reader.readAsDataURL(e.target.files[0]);
-                reader.onload = () =>
-                    resolve(setFormData({ ...formData, image: reader.result }));
-                reader.onerror = (error) => reject(error);
-            } else {
-                setFormData({ ...formData, image: "" });
-            }
-        });
+        if (e.target.files[0]) {
+            setImageName(e.target.files[0]);
+        }
     };
 
     const deleteImageUpload = (e) => {
         const fileInput = document.getElementById("fileInput");
         fileInput.value = "";
-        setFormData({ ...formData, image: "" });
+        setImageName("");
     };
 
-    const handleNewRecipe = (e) => {
+    const handleNewRecipe = async (e) => {
         e.preventDefault();
         if (Object.keys(formData.ingredients).length === 0) {
             let newIngredient = document.getElementById("newIngredient");
@@ -276,7 +222,34 @@ const NewRecipe = () => {
             newDirection.setCustomValidity("Please add at least one direction");
             newDirection.reportValidity();
         } else {
-            dispatch(newPost(formData));
+            const newImageName = await uploadImage(imageName);
+            console.log("first");
+
+            const submittionForm = {
+                ...formData,
+                nutrition: {
+                    ...formData.nutrition,
+                    calories: formData.nutrition.calories + "cal",
+                    fat: formData.nutrition.fat + "g",
+                    satFat: formData.nutrition.satFat + "g",
+                    sodium: formData.nutrition.sodium + "mg",
+                    protein: formData.nutrition.protein + "g",
+                    carbohydrates: formData.nutrition.carbohydrates + "g",
+                    sugar: formData.nutrition.sugar + "g",
+                    cholesterol: formData.nutrition.cholesterol + "mg",
+                },
+                image: newImageName,
+                author: auth.name,
+                authorId: auth._id,
+                authorUniqueId: auth.uniqueId,
+            };
+
+            const submitNewPost = async () => {
+                const newPostResult = await newPost(submittionForm);
+                navigate(`/${newPostResult._id}`);
+            };
+
+            submitNewPost();
         }
     };
 
@@ -317,7 +290,7 @@ const NewRecipe = () => {
                             id="fileInput"
                             required
                         />
-                        {formData.image.length > 0 && (
+                        {imageName && (
                             <button
                                 type="button"
                                 className="bg-red-400 py-2 px-4 rounded-md"

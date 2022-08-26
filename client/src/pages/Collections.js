@@ -1,58 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteCollection, getUser } from "../store/user/userActions";
+import { getUser, deleteCollection } from "../api/user";
+import LoadingPage from "../components/GlobalComponents/LoadingPage";
 
 const Collections = () => {
-    const [auth, setAuth] = useState(
-        useSelector((state) => state.user.authData?.result)
-    );
-    const [user, setUser] = useState(
-        useSelector((state) => state.user.userData?.result)
-    );
-
+    const [userData, setUserData] = useState(null);
     const [collection, setCollection] = useState(null);
 
-    const userData = useSelector((state) => state.user.userData?.result); // Get updates to userData
-
+    const auth = useSelector((state) => state.user.authData?.result);
     const { uniqueId, collectionId } = useParams();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(getUser(uniqueId));
-        setCollections();
+        const getData = async () => {
+            const data = await getUser(uniqueId);
+            setUserData(data.result);
+        };
+        getData();
     }, [uniqueId]);
 
+    useEffect(() => {}, [collection]);
     useEffect(() => {
-        setUser(userData);
+        setCollections();
     }, [userData]);
 
-    const handleCollectionDelete = (e) => {
+    const handleCollectionDelete = async (e) => {
         e.preventDefault();
 
         const deleteCollectionForm = {
             id: auth._id,
             collectionId: collectionId,
         };
-        dispatch(deleteCollection(deleteCollectionForm, navigate));
+
+        const data = await deleteCollection(deleteCollectionForm);
+        navigate(`/user/${data.result.uniqueId}`);
     };
 
     // Helpers
     const setCollections = () => {
         if (collectionId === "liked") {
-            setCollection(user?.likes);
+            setCollection(userData?.likes);
         } else {
-            const collection = user?.collections?.filter(
-                (collection) => collection._id === collectionId
-            );
-
-            setCollection(collection[0]);
+            if (userData) {
+                const collection = userData?.collections?.filter(
+                    (collection) => collection._id === collectionId
+                );
+                setCollection(collection[0]);
+            }
         }
     };
 
     const hasData = () => {
-        return user && collection;
+        return userData && collection;
     };
 
     return hasData() ? (
@@ -65,9 +65,9 @@ const Collections = () => {
                             ? "Liked Posts"
                             : collection.name}
                     </h2>
-                    <h3 className="text-lg">{user.name}</h3>
+                    <h3 className="text-lg">{userData.name}</h3>
                 </div>
-                {collectionId !== "liked" && user._id === auth?._id && (
+                {collectionId !== "liked" && userData._id === auth?._id && (
                     <button
                         type="button"
                         onClick={handleCollectionDelete}
@@ -81,7 +81,9 @@ const Collections = () => {
             <div className="my-4"></div>
         </div>
     ) : (
-        <div></div>
+        <div>
+            <LoadingPage />
+        </div>
     );
 };
 

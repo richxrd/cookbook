@@ -1,5 +1,5 @@
 import React from "react";
-import HomeRow from "../components/HomeRow";
+import HomeRow from "../components/HomePage/HomeRow";
 
 import bgImg from "../assets/homeHero.PNG";
 
