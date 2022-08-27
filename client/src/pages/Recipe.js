@@ -56,7 +56,8 @@ const Recipe = () => {
         if (JSON.parse(localStorage.getItem("profile"))) {
             getAuthById();
         }
-    }, [auth]);
+    }, []);
+
     useEffect(() => {}, [user]);
 
     const addReviewClick = () => {
@@ -277,7 +278,7 @@ const Recipe = () => {
 
                 {auth && auth._id !== recipe.authorId && showCommentPrompt && (
                     <div className="mt-4 w-full">
-                        <AddReview />
+                        <AddReview authId={auth._id} />
                     </div>
                 )}
 
