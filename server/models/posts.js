@@ -18,10 +18,11 @@ const postSchema = mongoose.Schema({
     likes: { type: [String], default: [] },
     reviews: [
         {
-            userId: { type: String },
+            authorId: { type: String },
             date: { type: Date },
             rate: { type: Number },
             comment: { type: String },
+            likes: { type: [String], default: [] },
         },
     ],
 });
