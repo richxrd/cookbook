@@ -9,7 +9,7 @@ import IngredientInput from "../components/RecipeForm/IngredientInput";
 import NutrionInput from "../components/RecipeForm/NutrionInput";
 import TagsInput from "../components/RecipeForm/TagsInput";
 import { newPost } from "../api/posts";
-import { uploadImage } from "../api/firebase";
+import { getImage, uploadImage } from "../api/firebase";
 
 import { DIETS } from "../ConstantVariables/Diets";
 import { CUISINES } from "../ConstantVariables/Cuisines";
@@ -214,6 +214,7 @@ const NewRecipe = () => {
             if (!submitting) {
                 setSubmitting(true);
                 const newImageName = await uploadImage(imageName);
+                const imageUrl = await getImage(newImageName);
 
                 const submittionForm = {
                     ...formData,
@@ -229,6 +230,7 @@ const NewRecipe = () => {
                         cholesterol: formData.nutrition.cholesterol + "mg",
                     },
                     image: newImageName,
+                    imageUrl: imageUrl,
                     author: auth.name,
                     authorId: auth._id,
                     authorUniqueId: auth.uniqueId,
