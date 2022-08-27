@@ -28,12 +28,10 @@ const userSchema = mongoose.Schema({
             },
         },
     ],
-    likes: [
-        {
-            type: [String],
-            default: [],
-        },
-    ],
+    likes: {
+        type: [String],
+        default: [],
+    },
 });
 
 export default mongoose.model("User", userSchema);
