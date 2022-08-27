@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ThumbUpIcon, TrashIcon } from "@heroicons/react/outline";
+import {
+    CheckIcon,
+    ThumbUpIcon,
+    TrashIcon,
+    XIcon,
+} from "@heroicons/react/outline";
 import { fetchUserById } from "../../api/user";
 import { useNavigate } from "react-router-dom";
 import { deleteReview, likeReview } from "../../api/posts";
@@ -32,6 +37,9 @@ const Comment = ({ review, auth, recipeId, setUpdatedRecipe }) => {
     };
     const handleDeleteReviewPrompt = async () => {
         setDeleteReviewPrompt(!deleteReviewPrompt);
+    };
+    const handleDeleteCancel = async () => {
+        setDeleteReviewPrompt(false);
     };
 
     const handleLikeReview = async () => {
@@ -70,20 +78,33 @@ const Comment = ({ review, auth, recipeId, setUpdatedRecipe }) => {
         hasData() && (
             <div className="flex flex-col space-y-2 border-b-2 py-4">
                 <div>
-                    <div className="flex justify-between items-start">
-                        <div
-                            className="capitalize font-medium text-[#d9534f] text-lg cursor-pointer pb-2"
-                            onClick={() => navigate(`/user/${author.uniqueId}`)}
-                        >
-                            {author.name}
+                    <div className="flex justify-between items-center pb-2">
+                        <div className="flex space-x-2 items-center">
+                            <img
+                                src={author.image}
+                                alt=""
+                                className="h-8 object-cover rounded-full"
+                            />
+                            <h2
+                                className="capitalize font-medium text-[#d9534f] text-lg cursor-pointer"
+                                onClick={() =>
+                                    navigate(`/user/${author.uniqueId}`)
+                                }
+                            >
+                                {author.name}
+                            </h2>
                         </div>
                         <div className="flex space-x-2 items-center font-light">
                             {deleteReviewPrompt && (
-                                <div
-                                    className="text-sm cursor-pointer bg-red-200 py-1 px-2"
-                                    onClick={handleDeleteReview}
-                                >
-                                    Confirm
+                                <div className="flex items-center cursor-pointer">
+                                    <CheckIcon
+                                        className="h-5 px-4 bg-green-200 hover:bg-green-400"
+                                        onClick={handleDeleteReview}
+                                    />
+                                    <XIcon
+                                        className="h-5 px-2 bg-red-200 hover:bg-red-400"
+                                        onClick={handleDeleteCancel}
+                                    />
                                 </div>
                             )}
                             {canDelete() && (
@@ -96,34 +117,33 @@ const Comment = ({ review, auth, recipeId, setUpdatedRecipe }) => {
                             )}
                         </div>
                     </div>
-
-                    <div className="flex space-x-4 text-sm text-[#ecb390]">
-                        <p className="text-[#96ceb4]">Rating: {rate}/5</p>
-                        <p>{getDate()}</p>
-                    </div>
                 </div>
                 <p className="text-base text-slate-700 py-2">{comment}</p>
-                <div
-                    className="flex space-x-1 items-center text-gray-400 cursor-pointer"
-                    onClick={handleLikeReview}
-                >
-                    <ThumbUpIcon
-                        className={`h-5 cursor-pointer ${
-                            auth &&
-                            review.likes.includes(auth._id) &&
-                            "text-green-400 hover:text-red-300"
-                        }`}
-                        onClick={handleReviewLike}
-                    />
-                    <p className="text-sm">
-                        Helpful {`(${likes.length || 0})`}
-                    </p>
+                <div className="flex justify-between items-center text-gray-400 text-sm">
+                    <div className="flex space-x-4">
+                        <p className="text-green-800">Rating: {rate}/5</p>
+                        <p>{getDate()}</p>
+                    </div>
+                    <div
+                        className="flex space-x-1 items-center cursor-pointer"
+                        onClick={handleLikeReview}
+                    >
+                        <ThumbUpIcon
+                            className={`h-5 cursor-pointer ${
+                                auth &&
+                                review.likes.includes(auth._id) &&
+                                "text-green-400 hover:text-red-300"
+                            }`}
+                            onClick={handleReviewLike}
+                        />
+                        <p>Helpful {`(${likes.length || 0})`}</p>
 
-                    {showLoginPrompt && (
-                        <p className="text-sm text-red-600 pl-4">
-                            Log in to like review
-                        </p>
-                    )}
+                        {showLoginPrompt && (
+                            <p className="text-red-600 pl-4">
+                                Log in to like review
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
         )
