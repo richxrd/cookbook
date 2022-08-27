@@ -1,29 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { getImage } from "../../api/firebase";
 import Rating from "../GlobalComponents/Rating";
 
 const ProfileRecipeCard = ({ recipe }) => {
-    const { title, image, reviews } = recipe;
-    const [imageSrc, setImageSrc] = useState(null);
+    const { title, imageUrl, reviews } = recipe;
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const getRecipeImage = async () => {
-            if (image.length > 0) {
-                const imageSrc = await getImage(image);
-                setImageSrc(imageSrc);
-            }
-        };
-
-        getRecipeImage();
-    }, [image]);
 
     return (
         <div className="flex flex-col h-fit shadow-lg bg-green-200 cursor-pointer rounded-lg relative group hover:scale-[1.02] hover:shadow-2xl transition duration-200">
             {/* img */}
             <img
-                src={imageSrc}
+                src={imageUrl}
                 alt=""
                 className="object-cover w-full h-80 rounded-lg"
                 onClick={() => navigate(`/${recipe._id}`)}

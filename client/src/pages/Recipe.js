@@ -14,14 +14,12 @@ import TimerCard from "../components/RecipePage/TimerCard";
 
 import { fetchUserById, getUser } from "../api/user";
 import { getPost, likePost } from "../api/posts";
-import { getImage } from "../api/firebase";
 
 const Recipe = () => {
     const [showCommentPrompt, setShowCommentPrompt] = useState(false);
     const [auth, setAuth] = useState(null);
     const [user, setUser] = useState(null);
     const [recipe, setRecipe] = useState(null);
-    const [image, setImage] = useState(null);
 
     const navigate = useNavigate();
     const { id } = useParams();
@@ -38,9 +36,6 @@ const Recipe = () => {
         const getData = async () => {
             const data = await fetchUserById(recipe.authorId);
             setUser(data.result);
-
-            const image = await getImage(recipe.image);
-            setImage(image);
         };
 
         if (recipe) {
@@ -98,7 +93,8 @@ const Recipe = () => {
     };
 
     const hasData = () => {
-        if (recipe === null || user === null || image == null) return false;
+        if (recipe === null || user === null || recipe.imageUrl == null)
+            return false;
         else if (recipe) return true;
         else {
             return false;
@@ -187,7 +183,7 @@ const Recipe = () => {
                 </div>
 
                 <img
-                    src={image}
+                    src={recipe.imageUrl}
                     className="object-cover w-full h-[480px] mx-auto col-span-2"
                     alt="/"
                 />
