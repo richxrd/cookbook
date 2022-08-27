@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ThumbUpIcon } from "@heroicons/react/outline";
 import Select from "react-select";
 
 import AddReview from "../components/RecipePage/AddReview";
@@ -120,7 +121,6 @@ const Recipe = () => {
                             />
                             {auth && auth._id !== recipe._authorId && (
                                 <div className="flex space-x-4 items-center font-light">
-                                    {}
                                     <div
                                         className={`flex space-x-1 items-center cursor-pointer py-1 px-3 rounded-lg hover:shadow-lg transition duration-200 ${
                                             recipe.likes.includes(auth._id)
@@ -129,24 +129,14 @@ const Recipe = () => {
                                         }`}
                                         onClick={handleLike}
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
+                                        <ThumbUpIcon
                                             className={`w-5 h-5 ${
                                                 recipe.likes.includes(auth._id)
                                                     ? "text-green-500"
                                                     : "text-slate-500"
                                             }`}
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M5.383 12.25c.806 0 1.533-.446 2.031-1.08a9.04 9.04 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V4.75A.75.75 0 0113 4a2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H12.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H4.654m10.598-9.75H13M4.654 20.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368A12 12 0 011 17.125c0-1.553.295-3.036.831-4.398.306-.774 1.086-1.227 1.918-1.227h1.053c.472 0 .745.556.5.96A8.958 8.958 0 004 17.124c0 1.194.232 2.333.654 3.375z"
-                                            />
-                                        </svg>
+                                        />
+
                                         <span>Like</span>
                                     </div>
                                     <div>
