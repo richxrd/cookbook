@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getImage } from "../../api/firebase";
 import { getPost } from "../../api/posts";
 
 const CollectionsCard = ({ collection, userId, id }) => {
@@ -14,19 +13,21 @@ const CollectionsCard = ({ collection, userId, id }) => {
     }, []);
 
     const getCollectionImg = async () => {
-        const data = await getPost(
-            collection.recipes[
-                Math.floor(Math.random() * collection.recipes.length)
-            ]
-        );
-        const image = await getImage(data.image);
-        setImageUrl(image);
+        if (collection.recipes.length > 0) {
+            const data = await getPost(
+                collection.recipes[
+                    Math.floor(Math.random() * collection.recipes.length)
+                ]
+            );
+            const image = data.imageUrl;
+            setImageUrl(image);
+        }
         setReadyToLoad(true);
     };
 
     const createCollectionImg = () => {
         return collection.recipes.length === 0 ? (
-            <div className="w-full h-full bg-gradient-to-t from-neutral-300 to-neutral-600"></div>
+            <div className="w-full h-full aspect-square bg-gradient-to-t from-neutral-300 to-neutral-600"></div>
         ) : (
             <div className="aspect-square backdrop-blur-sm bg-blue/30">
                 <img
