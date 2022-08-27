@@ -278,13 +278,26 @@ const Recipe = () => {
 
                 {auth && auth._id !== recipe.authorId && showCommentPrompt && (
                     <div className="mt-4 w-full">
-                        <AddReview authId={auth._id} />
+                        <AddReview
+                            authId={auth._id}
+                            postId={recipe._id}
+                            setUpdatedRecipe={setRecipe}
+                            setPrompt={setShowCommentPrompt}
+                        />
                     </div>
                 )}
 
                 <div className="flex flex-col justify-center">
-                    {Object.entries(recipe.reviews).map((review, index) => {
-                        return <Comment key={index} review={review} />;
+                    {recipe.reviews.map((review, index) => {
+                        return (
+                            <Comment
+                                key={index}
+                                review={review}
+                                auth={auth}
+                                recipeId={recipe._id}
+                                setUpdatedRecipe={setRecipe}
+                            />
+                        );
                     })}
                 </div>
             </div>
