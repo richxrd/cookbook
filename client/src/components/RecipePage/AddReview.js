@@ -1,22 +1,32 @@
 import React, { useState } from "react";
+import { addReview } from "../../api/posts";
+import { DEFAULT_REVIEW } from "../../ConstantVariables/DefaultReview";
 
-const DEFAULT = {
-    review: "",
-    rate: 5,
-};
-
-const AddReview = () => {
-    const [form, setForm] = useState(DEFAULT);
+const AddReview = ({ authId, postId, setUpdatedRecipe, setPrompt }) => {
+    const [form, setForm] = useState(DEFAULT_REVIEW);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const resetForm = () => {
-        setForm(DEFAULT);
+        setForm(DEFAULT_REVIEW);
     };
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
+        if (!isSubmitting) {
+            setIsSubmitting(true);
+            const submittionForm = {
+                ...form,
+                authorId: authId,
+                postId: postId,
+            };
 
-        console.log(form);
-        resetForm();
+            const data = await addReview(submittionForm);
+            setUpdatedRecipe(data);
+            setPrompt(false);
+
+            resetForm();
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (e) => {
@@ -35,7 +45,8 @@ const AddReview = () => {
                 required
                 value={form.review}
                 onChange={handleChange}
-                name="review"
+                minLength={1}
+                name="comment"
                 placeholder="Enter Review"
             />
 
