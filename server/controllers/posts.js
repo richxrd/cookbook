@@ -40,16 +40,28 @@ export const likePost = async (req, res) => {
 
     try {
         const recipe = await Post.findById(postId);
+        const user = await User.findById(userId);
 
-        const index = recipe.likes.findIndex((id) => id === String(userId));
-
-        if (index === -1) {
+        const recipeIndex = recipe.likes.findIndex(
+            (id) => id === String(userId)
+        );
+        if (recipeIndex === -1) {
             recipe.likes.push(userId);
         } else {
             recipe.likes = recipe.likes.filter((id) => id !== String(userId));
         }
 
+        const userIndex = user.likes.findIndex((id) => id === String(postId));
+        if (userIndex === -1) {
+            user.likes.push(postId);
+        } else {
+            user.likes = user.likes.filter((id) => id !== String(postId));
+        }
+
         const updatedRecipe = await Post.findByIdAndUpdate(recipe._id, recipe, {
+            new: true,
+        });
+        await User.findByIdAndUpdate(user._id, user, {
             new: true,
         });
 
