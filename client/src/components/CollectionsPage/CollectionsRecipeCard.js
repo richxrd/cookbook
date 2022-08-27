@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getPost } from "../../api/posts";
+import Rating from "../GlobalComponents/Rating";
 
 const CollectionsRecipeCard = ({ recipe }) => {
     const [recipeData, setRecipeData] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getData = async () => {
@@ -12,55 +16,32 @@ const CollectionsRecipeCard = ({ recipe }) => {
         getData();
     }, []);
 
-    const avgRating = () => {
-        return (
-            recipeData.reviews.reduce(
-                (sum, curr) => sum + parseInt(curr[1].rate),
-                0
-            ) / recipeData.reviews.length
-        );
-    };
-
     const hasData = () => {
         return recipeData;
     };
 
     return (
         hasData() && (
-            <div className="flex flex-col w-full h-fit md:h-60 shadow-md md:flex-row hover:shadow-xl hover:scale-[1.005] transition duration-200 cursor-pointer">
-                {/* Image */}
+            <div className="flex flex-col h-fit shadow-lg bg-green-200 cursor-pointer rounded-lg relative group hover:scale-[1.02] hover:shadow-2xl transition duration-200">
+                {/* img */}
                 <img
                     src={recipeData.imageUrl}
                     alt=""
-                    className="object-cover w-full h-60 md:w-[12rem] md:h-full"
+                    className="object-cover w-full max-h-80 rounded-lg"
+                    onClick={() => navigate(`/${recipeData._id}`)}
                 />
 
-                <div className="flex flex-col justify-between p-4 space-y-4 w-full md:w-[calc(100%-15rem)]">
-                    <div className="flex flex-col space-y-4">
-                        <h1 className="text-xl font-semibold tracking-wider wrap">
-                            {recipeData.title}
-                        </h1>
-
-                        <p className="font-light text-ellipsis overflow-y-hidden line-clamp-3">
-                            {recipeData.description}
-                        </p>
-                    </div>
-
-                    <div className="flex justify-between text-sm">
-                        <div>
-                            <span className="text-[#ecb390]">
-                                {recipeData.author}
-                            </span>
-                        </div>
-
-                        <div className="text-sm font-extralight">
-                            {!isNaN(avgRating()) ? (
-                                <p>Rating: {avgRating()}/5</p>
-                            ) : (
-                                <p>No Ratings</p>
-                            )}
-                        </div>
-                    </div>
+                <div
+                    className="p-2 text-sm absolute bottom-0 bg-green-200 w-full rounded-b-lg"
+                    onClick={() => navigate(`/${recipeData._id}`)}
+                >
+                    <h2 className="text-base font-semibold truncate">
+                        {recipeData.title}
+                    </h2>
+                    <Rating
+                        ratingsList={Object.entries(recipeData.reviews)}
+                        full
+                    />
                 </div>
             </div>
         )

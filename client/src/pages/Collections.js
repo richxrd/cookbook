@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUser, deleteCollection } from "../api/user";
+
 import LoadingPage from "../components/GlobalComponents/LoadingPage";
+import CollectionsRecipeCard from "../components/CollectionsPage/CollectionsRecipeCard";
+
+import { getUser, deleteCollection } from "../api/user";
 
 const Collections = () => {
     const [userData, setUserData] = useState(null);
@@ -78,7 +81,17 @@ const Collections = () => {
                 )}
             </div>
 
-            <div className="my-4"></div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 my-4">
+                {collection.length > 0 &&
+                    collection.map((recipe) => {
+                        return (
+                            <CollectionsRecipeCard
+                                recipe={recipe}
+                                key={recipe}
+                            />
+                        );
+                    })}
+            </div>
         </div>
     ) : (
         <div>
