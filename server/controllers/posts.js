@@ -58,3 +58,66 @@ export const likePost = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const addReview = async (req, res) => {
+    const { authorId, comment, rate, postId } = req.body;
+    try {
+        const recipe = await Post.findById(postId);
+
+        const newReview = {
+            authorId: authorId,
+            comment: comment,
+            rate: rate,
+            date: new Date().toISOString(),
+        };
+
+        recipe.reviews.push(newReview);
+
+        const updatedRecipe = await Post.findByIdAndUpdate(recipe._id, recipe, {
+            new: true,
+        });
+
+        res.status(200).json({ post: updatedRecipe });
+    } catch (error) {}
+};
+
+export const deleteReview = async (req, res) => {
+    const { recipeId, commentId } = req.body;
+    try {
+        const recipe = await Post.findById(recipeId);
+
+        recipe.reviews = recipe.reviews.filter(
+            (review) => review._id.toString() !== commentId
+        );
+
+        const updatedRecipe = await Post.findByIdAndUpdate(recipe._id, recipe, {
+            new: true,
+        });
+        res.status(200).json({ post: updatedRecipe });
+    } catch (error) {}
+};
+
+export const likeReview = async (req, res) => {
+    const { recipeId, commentId, authId } = req.body;
+    try {
+        const recipe = await Post.findById(recipeId);
+        const review = recipe.reviews.filter(
+            (review) => review._id.toString() === commentId
+        );
+        const reviewIndex = recipe.reviews.indexOf(review[0]);
+        const likeIndex = recipe.reviews[reviewIndex].likes.indexOf(authId);
+
+        if (likeIndex === -1) {
+            recipe.reviews[reviewIndex].likes.push(authId);
+        } else {
+            recipe.reviews[reviewIndex].likes = recipe.reviews[
+                reviewIndex
+            ].likes.filter((id) => id !== String(authId));
+        }
+
+        const updatedRecipe = await Post.findByIdAndUpdate(recipeId, recipe, {
+            new: true,
+        });
+        res.status(200).json({ post: updatedRecipe });
+    } catch (error) {}
+};

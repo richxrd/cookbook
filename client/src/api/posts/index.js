@@ -20,3 +20,24 @@ export const likePost = async (formData) => {
         return data.post;
     } catch (error) {}
 };
+
+export const addReview = async (formData) => {
+    try {
+        const { data } = await api.addReview(formData);
+        return data.post;
+    } catch (error) {}
+};
+
+export const deleteReview = async (formData) => {
+    try {
+        const { data } = await api.deleteReview(formData);
+        return data.post;
+    } catch (error) {}
+};
+
+export const likeReview = async (formData) => {
+    try {
+        const { data } = await api.likeReview(formData);
+        return data.post;
+    } catch (error) {}
+};

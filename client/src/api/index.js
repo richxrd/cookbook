@@ -27,3 +27,9 @@ export const followUser = (form) => API.patch(`users/followuser`, form);
 export const newPost = (formData) => API.post("/posts/newpost", formData);
 export const fetchPost = (id) => API.get(`/posts/get/${id}`);
 export const likePost = (formData) => API.patch("/posts/likepost", formData);
+
+export const addReview = (formData) => API.patch("/posts/review/add", formData);
+export const deleteReview = (formData) =>
+    API.patch("/posts/review/delete", formData);
+export const likeReview = (formData) =>
+    API.patch("/posts/review/like", formData);
