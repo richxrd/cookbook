@@ -9,6 +9,7 @@ const postSchema = mongoose.Schema({
     diets: { type: [String], default: [] },
     directions: { type: [String], default: [] },
     image: { type: String },
+    imageUrl: { type: String },
     ingredients: { type: Object },
     nutrition: { type: Object },
     servings: { type: String },

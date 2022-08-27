@@ -8,6 +8,7 @@ export const DEFAULT_FORM = {
     diets: [],
     cuisine: "",
     image: "",
+    imageUrl: "",
     time: {
         prep: "",
         cook: "",
