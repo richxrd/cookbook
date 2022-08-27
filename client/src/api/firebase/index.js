@@ -1,11 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    listAll,
-    getDownloadURL,
-} from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { customAlphabet } from "nanoid";
 
 const firebaseConfig = {
