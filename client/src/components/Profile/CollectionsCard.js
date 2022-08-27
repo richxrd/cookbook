@@ -1,40 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getImage } from "../../api/firebase";
+import { getPost } from "../../api/posts";
 
 const CollectionsCard = ({ collection, userId, id }) => {
+    const [readyToLoad, setReadyToLoad] = useState(false);
+    const [imageUrl, setImageUrl] = useState([]);
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        getCollectionImg();
+    }, []);
+
+    const getCollectionImg = async () => {
+        const data = await getPost(
+            collection.recipes[
+                Math.floor(Math.random() * collection.recipes.length)
+            ]
+        );
+        const image = await getImage(data.image);
+        setImageUrl(image);
+        setReadyToLoad(true);
+    };
+
     const createCollectionImg = () => {
         return collection.recipes.length === 0 ? (
             <div className="w-full h-full bg-gradient-to-t from-neutral-300 to-neutral-600"></div>
         ) : (
-            <div className="grid grid-rows-2 grid-cols-2">
-                {collection
-                    .filter((_, idx) => idx < 3)
-                    .map((recipe) => {
-                        return (
-                            <img
-                                src={recipe.image}
-                                className="w-full h-full object-cover opacity-80"
-                                key={recipe.id}
-                                alt="/"
-                            />
-                        );
-                    })}
+            <div className="aspect-square backdrop-blur-sm bg-blue/30">
+                <img
+                    src={imageUrl}
+                    className="w-full h-full object-cover backdrop-blur-sm bg-blue/30"
+                    key={imageUrl}
+                    alt="/"
+                />
             </div>
         );
     };
+
     return (
-        <div
-            onClick={() => navigate(`/user/${userId}/collection/${id}`)}
-            className="w-full aspect-square bg-white drop-shadow-lg hover:drop-shadow-2xl transition duration-200 relative cursor-pointer"
-        >
-            {createCollectionImg()}
-            <div className="absolute left-0 top-0 p-4 w-full h-full">
-                <h1 className="text-2xl text-white font-semibold tracking-wider drop-shadow-xl">
-                    {collection.name}
-                </h1>
+        readyToLoad && (
+            <div
+                onClick={() => navigate(`/user/${userId}/collection/${id}`)}
+                className="w-full bg-white drop-shadow-lg hover:drop-shadow-2xl transition duration-200 relative cursor-pointer"
+            >
+                {createCollectionImg()}
+                <div className="absolute left-0 top-0 p-4 w-full h-full">
+                    <h1
+                        className="text-2xl text-white font-semibold tracking-wider drop-shadow-xl"
+                        style={{ textShadow: "1px 1px 25px black" }}
+                    >
+                        {collection.name}
+                    </h1>
+                </div>
             </div>
-        </div>
+        )
     );
 };
 
