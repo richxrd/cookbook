@@ -22,6 +22,8 @@ const NewRecipe = () => {
     const [newIngredientQuantity, setNewIngredientQuantity] = useState("");
     const [newDirection, setNewDirection] = useState("");
 
+    const [submitting, setSubmitting] = useState(false);
+
     const navigate = useNavigate();
     const auth = useSelector((state) => state.user?.authData?.result);
 
@@ -93,21 +95,15 @@ const NewRecipe = () => {
     };
 
     const handleNewIngredient = (e) => {
-        if (newIngredientName.length === 0) {
-            const newIngredient = document.getElementById("newIngredient");
-            newIngredient.setCustomValidity("Ingredient must not be empty");
-            newIngredient.reportValidity();
-        } else {
-            e.preventDefault();
-            setFormData({
-                ...formData,
-                ingredients: {
-                    ...formData.ingredients,
-                    [newIngredientName]: newIngredientQuantity,
-                },
-            });
-            resetIngredientForm();
-        }
+        e.preventDefault();
+        setFormData({
+            ...formData,
+            ingredients: {
+                ...formData.ingredients,
+                [newIngredientName]: newIngredientQuantity,
+            },
+        });
+        resetIngredientForm();
     };
 
     const handleDirectionKeydown = (e) => {
@@ -124,19 +120,12 @@ const NewRecipe = () => {
 
     const handleNewDirection = (e) => {
         e.preventDefault();
+        setFormData({
+            ...formData,
+            directions: [...formData.directions, newDirection],
+        });
 
-        if (newDirection.length === 0) {
-            const newDirection = document.getElementById("newDirection");
-            newDirection.setCustomValidity("Direction must not be empty");
-            newDirection.reportValidity();
-        } else {
-            setFormData({
-                ...formData,
-                directions: [...formData.directions, newDirection],
-            });
-
-            setNewDirection("");
-        }
+        setNewDirection("");
     };
 
     const handleDirectionChange = (e) => {
@@ -222,34 +211,37 @@ const NewRecipe = () => {
             newDirection.setCustomValidity("Please add at least one direction");
             newDirection.reportValidity();
         } else {
-            const newImageName = await uploadImage(imageName);
-            console.log("first");
+            if (!submitting) {
+                setSubmitting(true);
+                const newImageName = await uploadImage(imageName);
 
-            const submittionForm = {
-                ...formData,
-                nutrition: {
-                    ...formData.nutrition,
-                    calories: formData.nutrition.calories + "cal",
-                    fat: formData.nutrition.fat + "g",
-                    satFat: formData.nutrition.satFat + "g",
-                    sodium: formData.nutrition.sodium + "mg",
-                    protein: formData.nutrition.protein + "g",
-                    carbohydrates: formData.nutrition.carbohydrates + "g",
-                    sugar: formData.nutrition.sugar + "g",
-                    cholesterol: formData.nutrition.cholesterol + "mg",
-                },
-                image: newImageName,
-                author: auth.name,
-                authorId: auth._id,
-                authorUniqueId: auth.uniqueId,
-            };
+                const submittionForm = {
+                    ...formData,
+                    nutrition: {
+                        ...formData.nutrition,
+                        calories: formData.nutrition.calories + "cal",
+                        fat: formData.nutrition.fat + "g",
+                        satFat: formData.nutrition.satFat + "g",
+                        sodium: formData.nutrition.sodium + "mg",
+                        protein: formData.nutrition.protein + "g",
+                        carbohydrates: formData.nutrition.carbohydrates + "g",
+                        sugar: formData.nutrition.sugar + "g",
+                        cholesterol: formData.nutrition.cholesterol + "mg",
+                    },
+                    image: newImageName,
+                    author: auth.name,
+                    authorId: auth._id,
+                    authorUniqueId: auth.uniqueId,
+                };
 
-            const submitNewPost = async () => {
-                const newPostResult = await newPost(submittionForm);
-                navigate(`/${newPostResult._id}`);
-            };
+                const submitNewPost = async () => {
+                    const newPostResult = await newPost(submittionForm);
+                    setSubmitting(false);
+                    navigate(`/${newPostResult._id}`);
+                };
 
-            submitNewPost();
+                submitNewPost();
+            }
         }
     };
 
@@ -415,6 +407,7 @@ const NewRecipe = () => {
                             value={newIngredientName}
                             onChange={handleNewIngrdientName}
                             id="newIngredient"
+                            minLength={1}
                         />
                         <div className="flex space-x-2 items-center">
                             <input
@@ -527,6 +520,7 @@ const NewRecipe = () => {
                         placeholder="Enter Direction"
                         value={newDirection}
                         onChange={handleNewDirectionChange}
+                        minLength={1}
                         id="newDirection"
                     />
                     <button
