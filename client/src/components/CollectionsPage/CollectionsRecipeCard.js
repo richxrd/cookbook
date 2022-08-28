@@ -22,12 +22,12 @@ const CollectionsRecipeCard = ({ recipe }) => {
 
     return (
         hasData() && (
-            <div className="flex flex-col h-fit shadow-lg bg-green-200 cursor-pointer rounded-lg relative group hover:scale-[1.02] hover:shadow-2xl transition duration-200">
+            <div className="flex flex-col w-[290px] aspect-square mx-2 mb-4 h-fit shadow-lg cursor-pointer rounded-lg relative group hover:scale-[1.02] hover:shadow-2xl transition duration-200">
                 {/* img */}
                 <img
                     src={recipeData.imageUrl}
                     alt=""
-                    className="object-cover w-full max-h-80 rounded-lg"
+                    className="object-cover w-full h-80 rounded-lg"
                     onClick={() => navigate(`/${recipeData._id}`)}
                 />
 
