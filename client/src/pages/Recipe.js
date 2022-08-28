@@ -92,6 +92,40 @@ const Recipe = () => {
         return collectionOptions;
     };
 
+    const renderLikeEdit = () => {
+        if (auth._id !== recipe.authorId) {
+            return (
+                <div
+                    className={`flex space-x-1 items-center cursor-pointer py-1 px-3 rounded-lg hover:shadow-lg transition duration-200 ${
+                        recipe.likes.includes(auth._id)
+                            ? "bg-green-100"
+                            : "bg-gray-50"
+                    }`}
+                    onClick={handleLike}
+                >
+                    <ThumbUpIcon
+                        className={`w-5 h-5 ${
+                            recipe.likes.includes(auth._id)
+                                ? "text-green-500"
+                                : "text-slate-500"
+                        }`}
+                    />
+
+                    <span>Like</span>
+                </div>
+            );
+        } else {
+            return (
+                <div
+                    className="py-1 px-3 rounded-lg bg-red-200 hover:bg-red-400 hover:shadow-lg cursor-pointer transition duration-200"
+                    onClick={() => navigate(`/${recipe._id}/edit`)}
+                >
+                    Edit
+                </div>
+            );
+        }
+    };
+
     const hasData = () => {
         if (recipe === null || user === null || recipe.imageUrl == null)
             return false;
@@ -117,24 +151,7 @@ const Recipe = () => {
                             />
                             {auth && auth._id !== recipe._authorId && (
                                 <div className="flex space-x-4 items-center font-light">
-                                    <div
-                                        className={`flex space-x-1 items-center cursor-pointer py-1 px-3 rounded-lg hover:shadow-lg transition duration-200 ${
-                                            recipe.likes.includes(auth._id)
-                                                ? "bg-green-100"
-                                                : "bg-gray-50"
-                                        }`}
-                                        onClick={handleLike}
-                                    >
-                                        <ThumbUpIcon
-                                            className={`w-5 h-5 ${
-                                                recipe.likes.includes(auth._id)
-                                                    ? "text-green-500"
-                                                    : "text-slate-500"
-                                            }`}
-                                        />
-
-                                        <span>Like</span>
-                                    </div>
+                                    {renderLikeEdit()}
                                     <div>
                                         <Select
                                             name="collections"
