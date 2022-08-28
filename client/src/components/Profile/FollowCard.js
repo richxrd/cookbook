@@ -22,7 +22,7 @@ const FollowCard = ({ id }) => {
         hasData() && (
             <div
                 onClick={() => navigate(`/user/${user.uniqueId}`)}
-                className="flex items-center space-x-4 p-3 bg-[#f5eedc] rounded-md drop-shadow-lg hover:scale-[1.02] hover:drop-shadow-2xl transition duration-200 cursor-pointer"
+                className="flex items-center space-x-4 p-3 bg-[#FCF8E8] rounded-md drop-shadow-lg hover:scale-[1.02] hover:drop-shadow-2xl transition duration-200 cursor-pointer"
             >
                 {/* Image */}
                 <img

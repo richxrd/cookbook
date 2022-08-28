@@ -7,12 +7,12 @@ const ProfileRecipeCard = ({ recipe }) => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col h-fit shadow-lg bg-green-200 cursor-pointer rounded-lg relative group hover:scale-[1.02] hover:shadow-2xl transition duration-200">
+        <div className="flex flex-col m-2 aspect-[4/5] shadow-lg cursor-pointer rounded-lg relative group hover:scale-[1.02] hover:shadow-2xl transition duration-200">
             {/* img */}
             <img
                 src={imageUrl}
                 alt=""
-                className="object-cover w-full h-80 rounded-lg"
+                className="object-cover w-full h-full rounded-lg"
                 onClick={() => navigate(`/${recipe._id}`)}
             />
 
@@ -24,7 +24,7 @@ const ProfileRecipeCard = ({ recipe }) => {
                 <Rating ratingsList={Object.entries(reviews)} full />
             </div>
 
-            <div className="absolute p-2 top-0 right-0 opacity-0 group-hover:opacity-100 transition duration-200">
+            <div className="absolute p-2 top-0 right-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition duration-200">
                 <button
                     className="w-full py-2 px-4 rounded-xl bg-[#ecb390] hover:bg-[#d9534f] bg-opacity-70"
                     onClick={() => console.log("Edit")}

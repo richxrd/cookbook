@@ -62,13 +62,25 @@ const Collections = () => {
         <div className="min-h-[calc(100vh-318px)] pt-32 py-16 md:pt-32 px-6 mx-auto max-w-screen-xl">
             <div className="flex flex-col space-y-4 justify-between items-center md:flex-row md:space-y-0 ">
                 {/* Title */}
-                <div>
+                <div className="flex flex-col space-y-2">
                     <h2 className="text-4xl font-semibold tracking-wide">
                         {collectionId === "liked"
                             ? "Liked Posts"
                             : collection.name}
                     </h2>
-                    <h3 className="text-lg">{userData.name}</h3>
+                    <h3
+                        className="text-base flex items-center space-x-2 cursor-pointer"
+                        onClick={() => navigate(`/user/${userData.uniqueId}`)}
+                    >
+                        <span>
+                            <img
+                                src={userData.image}
+                                alt=""
+                                className="w-8 rounded-full"
+                            />
+                        </span>
+                        <span className="text-red-400">{userData.name}</span>
+                    </h3>
                 </div>
                 {collectionId !== "liked" && userData._id === auth?._id && (
                     <button
@@ -81,7 +93,7 @@ const Collections = () => {
                 )}
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 my-4">
+            <div className="flex flex-wrap justify-center lg:justify-start my-4">
                 {collection.length > 0 &&
                     collection.map((recipe) => {
                         return (

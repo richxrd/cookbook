@@ -90,6 +90,8 @@ const Profile = () => {
     const handleProfileView = (e) => {
         e.preventDefault();
         setProfileView(e.target.value);
+        setCollectionName("");
+        setNewCollection(false);
     };
 
     const handleRecipesSort = (e) => {
@@ -137,7 +139,7 @@ const Profile = () => {
     // Render Helpers
     const renderFollowerCards = () => {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {userData.followers.map((id) => {
                     return <FollowCard key={id} id={id} />;
                 })}
@@ -147,7 +149,7 @@ const Profile = () => {
 
     const renderFollowingCards = () => {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {userData.following.map((id) => {
                     return <FollowCard key={id} id={id} />;
                 })}
@@ -329,6 +331,7 @@ const Profile = () => {
                                         <input
                                             className="p-2 border w-full outline-none focus:ring-0 text-sm"
                                             minLength="1"
+                                            maxLength="16"
                                             value={collectionName}
                                             onChange={handleCollectionName}
                                             required
@@ -342,7 +345,7 @@ const Profile = () => {
                         )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {/* Recipes View */}
                         {profileView === "recipes" &&
                             recipes.map((recipe) => {
