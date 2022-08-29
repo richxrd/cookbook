@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getPost } from "../../api/posts";
+import { getPost, removeFromCollection } from "../../api/posts";
 
-const CollectionsCard = ({ collection, userId, id }) => {
+const CollectionsCard = ({ collection, userId, id, updateUser }) => {
     const [readyToLoad, setReadyToLoad] = useState(false);
-    const [imageUrl, setImageUrl] = useState([]);
+    const [imageUrl, setImageUrl] = useState("");
 
     const navigate = useNavigate();
 
@@ -14,13 +14,20 @@ const CollectionsCard = ({ collection, userId, id }) => {
 
     const getCollectionImg = async () => {
         if (collection.recipes.length > 0) {
-            const data = await getPost(
-                collection.recipes[
-                    Math.floor(Math.random() * collection.recipes.length)
-                ]
-            );
-            const image = data.imageUrl;
-            setImageUrl(image);
+            const data = await getPost(collection.recipes[0]);
+            console.log(collection.recipes);
+            if (!data) {
+                const submittionForm = {
+                    userId: userId,
+                    postId: collection.recipes[0],
+                    collectionId: collection._id,
+                };
+                const data = await removeFromCollection(submittionForm);
+                updateUser(data);
+            } else {
+                const image = data.imageUrl;
+                setImageUrl(image);
+            }
         }
         setReadyToLoad(true);
     };
