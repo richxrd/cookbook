@@ -27,7 +27,7 @@ const ProfileRecipeCard = ({ recipe }) => {
             <div className="absolute p-2 top-0 right-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition duration-200">
                 <button
                     className="w-full py-2 px-4 rounded-xl bg-[#ecb390] hover:bg-[#d9534f] bg-opacity-70"
-                    onClick={() => console.log("Edit")}
+                    onClick={() => navigate(`/${recipe._id}/edit`)}
                 >
                     Edit
                 </button>
