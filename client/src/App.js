@@ -9,6 +9,7 @@ import Recipe from "./pages/Recipe";
 import NewRecipe from "./pages/NewRecipe";
 import Profile from "./pages/Profile";
 import Collections from "./pages/Collections";
+import EditRecipe from "./pages/EditRecipe";
 
 const App = () => {
     return (
@@ -20,6 +21,7 @@ const App = () => {
                     <Route path="/auth" element={<Auth />} />
                     {/* <Route path="/recipes" element={<Recipe />} /> */}
                     <Route path="/:id" element={<Recipe />} />
+                    <Route path="/:id/edit" element={<EditRecipe />} />
                     <Route path="/new" element={<NewRecipe />} />
                     <Route path="/user/:uniqueId" element={<Profile />} />
                     <Route
