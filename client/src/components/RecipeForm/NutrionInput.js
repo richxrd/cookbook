@@ -1,6 +1,6 @@
 import React from "react";
 
-const NutrionInput = ({ title, measurement, handleChange }) => {
+const NutrionInput = ({ title, measurement, handleChange, value }) => {
     return (
         <div className="flex justify-between my-4 items-center space-x-8 tracking-wide font-light border-0 border-b-2 border-[#ecb390]">
             <span className="capitalize">{title}</span>
