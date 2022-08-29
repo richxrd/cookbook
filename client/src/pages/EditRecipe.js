@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import DescriptionInput from "../components/RecipeForm/DescriptionInput";
-import EditInput from "../components/RecipeForm/TitleInput";
 import QuickInfoInput from "../components/RecipeForm/QuickInfoInput";
 import IngredientsSection from "../components/RecipeForm/IngredientsSection";
 import NutritionSection from "../components/RecipeForm/NutritionSection";
@@ -12,7 +11,7 @@ import CuisinesDiet from "../components/RecipeForm/CuisinesDiet";
 
 import { deletePost, getPost, newPost, updatePost } from "../api/posts";
 import { deleteImage } from "../api/firebase";
-
+import TitleInput from "../components/RecipeForm/TitleInput";
 const EditRecipe = () => {
     const [recipe, setRecipe] = useState(null);
     const [submitting, setSubmitting] = useState(false);
@@ -90,7 +89,7 @@ const EditRecipe = () => {
                 </h1>
 
                 <div className="flex flex-col space-y-8">
-                    <EditInput setUpdatedForm={setRecipe} formData={recipe} />
+                    <TitleInput setUpdatedForm={setRecipe} formData={recipe} />
                     <DescriptionInput
                         setUpdatedForm={setRecipe}
                         formData={recipe}
