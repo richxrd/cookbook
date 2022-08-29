@@ -71,6 +71,30 @@ export const likePost = async (req, res) => {
     }
 };
 
+export const addToCollection = async (req, res) => {
+    const { userId, postId, collectionId } = req.body;
+    try {
+        const user = await User.findById(userId);
+
+        user.collections.forEach((collection) => {
+            if (collection._id.toString() === collectionId) {
+                const indexOfPost = collection.recipes.indexOf(postId);
+                if (indexOfPost === -1) {
+                    collection.recipes.push(postId);
+                }
+            }
+        });
+
+        const updatedUser = await User.findByIdAndUpdate(user._id, user, {
+            new: true,
+        });
+
+        res.status(200).json({ post: updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export const addReview = async (req, res) => {
     const { authorId, comment, rate, postId } = req.body;
     try {
@@ -136,6 +160,8 @@ export const likeReview = async (req, res) => {
 
 export const deletePost = async (req, res) => {
     const { id } = req.params;
+
+    await User.updateMany({}, { $pull: { likes: id } });
 
     await Post.findByIdAndDelete(id);
     res.json({ message: "Post deleted" });
