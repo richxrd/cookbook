@@ -13,7 +13,7 @@ import Rating from "../components/GlobalComponents/Rating";
 import TimerCard from "../components/RecipePage/TimerCard";
 
 import { fetchUserById, getUser } from "../api/user";
-import { getPost, likePost } from "../api/posts";
+import { addToCollection, getPost, likePost } from "../api/posts";
 
 const Recipe = () => {
     const [showCommentPrompt, setShowCommentPrompt] = useState(false);
@@ -76,6 +76,16 @@ const Recipe = () => {
         likePostFirebase();
     };
 
+    const handleCollectionChange = async (e) => {
+        const submittionForm = {
+            postId: recipe._id,
+            collectionId: e.value,
+            userId: auth._id,
+        };
+
+        await addToCollection(submittionForm);
+    };
+
     //helper
 
     const getCollectionsOptions = () => {
@@ -85,7 +95,7 @@ const Recipe = () => {
             auth.collections.map((collection) => {
                 collectionOptions.push({
                     label: collection.name,
-                    value: collection.name,
+                    value: collection._id,
                 });
             });
         }
@@ -159,6 +169,7 @@ const Recipe = () => {
                                             className="w-[200px]"
                                             isSearchable={false}
                                             placeholder="Add to Collection"
+                                            onChange={handleCollectionChange}
                                         />
                                     </div>
                                 </div>
