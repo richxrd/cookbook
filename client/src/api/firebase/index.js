@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject,
+} from "firebase/storage";
 import { customAlphabet } from "nanoid";
 
 const firebaseConfig = {
@@ -30,4 +36,9 @@ export const getImage = async (name) => {
     const imageRef = ref(storage, `images/${name}`);
     const data = await getDownloadURL(imageRef);
     return data;
+};
+
+export const deleteImage = async (name) => {
+    const imageRef = ref(storage, `images/${name}`);
+    const data = await deleteObject(imageRef);
 };

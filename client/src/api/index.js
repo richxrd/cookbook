@@ -33,3 +33,4 @@ export const deleteReview = (formData) =>
     API.patch("/posts/review/delete", formData);
 export const likeReview = (formData) =>
     API.patch("/posts/review/like", formData);
+export const deleteRecipe = (id) => API.delete(`/posts/delete/${id}`);

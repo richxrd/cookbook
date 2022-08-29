@@ -41,3 +41,9 @@ export const likeReview = async (formData) => {
         return data.post;
     } catch (error) {}
 };
+
+export const deletePost = async (id) => {
+    try {
+        await api.deleteRecipe(id);
+    } catch (error) {}
+};

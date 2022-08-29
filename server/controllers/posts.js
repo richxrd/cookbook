@@ -133,3 +133,10 @@ export const likeReview = async (req, res) => {
         res.status(200).json({ post: updatedRecipe });
     } catch (error) {}
 };
+
+export const deletePost = async (req, res) => {
+    const { id } = req.params;
+
+    await Post.findByIdAndDelete(id);
+    res.json({ message: "Post deleted" });
+};
