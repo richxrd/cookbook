@@ -10,6 +10,7 @@ import { getUser, deleteCollection } from "../api/user";
 const Collections = () => {
     const [userData, setUserData] = useState(null);
     const [collection, setCollection] = useState(null);
+    const [recipes, setRecipes] = useState(null);
 
     const auth = useSelector((state) => state.user.authData?.result);
     const { uniqueId, collectionId } = useParams();
@@ -44,12 +45,14 @@ const Collections = () => {
     const setCollections = () => {
         if (collectionId === "liked") {
             setCollection(userData?.likes);
+            setRecipes(userData?.likes);
         } else {
             if (userData) {
                 const collection = userData?.collections?.filter(
                     (collection) => collection._id === collectionId
                 );
                 setCollection(collection[0]);
+                setRecipes(collection[0].recipes);
             }
         }
     };
@@ -94,8 +97,8 @@ const Collections = () => {
             </div>
 
             <div className="flex flex-wrap justify-center lg:justify-start my-4">
-                {collection.length > 0 &&
-                    collection.map((recipe) => {
+                {recipes.length > 0 &&
+                    recipes.map((recipe) => {
                         return (
                             <CollectionsRecipeCard
                                 recipe={recipe}
