@@ -48,8 +48,22 @@ export const deletePost = async (id) => {
     } catch (error) {}
 };
 
+export const updatePost = async (formData) => {
+    try {
+        const { data } = await api.updatePost(formData);
+        return data.post;
+    } catch (error) {}
+};
+
 export const addToCollection = async (formData) => {
     try {
         await api.addToCollection(formData);
+    } catch (error) {}
+};
+
+export const removeFromCollection = async (formData) => {
+    try {
+        const data = await api.removeFromCollection(formData);
+        return data.user;
     } catch (error) {}
 };
