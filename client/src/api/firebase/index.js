@@ -40,5 +40,5 @@ export const getImage = async (name) => {
 
 export const deleteImage = async (name) => {
     const imageRef = ref(storage, `images/${name}`);
-    const data = await deleteObject(imageRef);
+    await deleteObject(imageRef);
 };
