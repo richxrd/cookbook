@@ -367,6 +367,7 @@ const Profile = () => {
                                 }}
                                 userId={uniqueId}
                                 id={"liked"}
+                                updateUser={setUserData}
                             />
                         )}
 
@@ -378,6 +379,7 @@ const Profile = () => {
                                         collection={collection}
                                         userId={uniqueId}
                                         id={collection._id}
+                                        updateUser={setUserData}
                                     />
                                 );
                             })}
