@@ -47,3 +47,9 @@ export const deletePost = async (id) => {
         await api.deleteRecipe(id);
     } catch (error) {}
 };
+
+export const addToCollection = async (formData) => {
+    try {
+        await api.addToCollection(formData);
+    } catch (error) {}
+};
