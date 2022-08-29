@@ -218,17 +218,6 @@ const NewRecipe = () => {
 
                 const submittionForm = {
                     ...formData,
-                    nutrition: {
-                        ...formData.nutrition,
-                        calories: formData.nutrition.calories + "cal",
-                        fat: formData.nutrition.fat + "g",
-                        satFat: formData.nutrition.satFat + "g",
-                        sodium: formData.nutrition.sodium + "mg",
-                        protein: formData.nutrition.protein + "g",
-                        carbohydrates: formData.nutrition.carbohydrates + "g",
-                        sugar: formData.nutrition.sugar + "g",
-                        cholesterol: formData.nutrition.cholesterol + "mg",
-                    },
                     image: newImageName,
                     imageUrl: imageUrl,
                     author: auth.name,
@@ -282,6 +271,8 @@ const NewRecipe = () => {
                             type="file"
                             onChange={handleImageUpload}
                             id="fileInput"
+                            placeholder="hi"
+                            className="w-1/2"
                             required
                         />
                         {imageName && (
@@ -593,7 +584,7 @@ const NewRecipe = () => {
                 </div>
             </div>
 
-            {/* Image & Submit */}
+            {/* Submit */}
             <div className="grid grid-cols-1 py-4">
                 {/* Submit */}
                 <button
