@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import { addCollection } from "../../api/user";
+import { addCollection } from "../../api/collections";
 import CollectionsCard from "./CollectionsCard";
 import FollowCard from "./FollowCard";
 import ProfileRecipeCard from "./ProfileRecipeCard";
@@ -10,9 +10,10 @@ const ProfileView = ({
     userData,
     profileView,
     recipes,
+    collections,
     setRecipes,
     setUserData,
-    uniqueId,
+    setCollections,
 }) => {
     const [newCollection, setNewCollection] = useState(false);
     const [collectionName, setCollectionName] = useState("");
@@ -37,7 +38,9 @@ const ProfileView = ({
             collectionName: collectionName,
         };
         setNewCollection(false);
+        setCollectionName("");
         const data = await addCollection(newCollectionForm);
+        setCollections(data.collections);
         setUserData(data.result);
     };
 
@@ -182,19 +185,19 @@ const ProfileView = ({
                             name: "Liked Recipes",
                             recipes: userData.likes,
                         }}
-                        userId={uniqueId}
+                        userId={userData.uniqueId}
                         id={"liked"}
                         updateUser={setUserData}
                     />
                 )}
 
                 {profileView === "collections" &&
-                    userData.collections.map((collection) => {
+                    collections.map((collection) => {
                         return (
                             <CollectionsCard
                                 key={collection._id}
                                 collection={collection}
-                                userId={uniqueId}
+                                userId={userData.uniqueId}
                                 id={collection._id}
                                 updateUser={setUserData}
                             />
