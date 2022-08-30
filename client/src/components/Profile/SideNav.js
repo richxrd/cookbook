@@ -73,7 +73,7 @@ const SideNav = ({ userData, authData, updateUserData, updateProfileView }) => {
                     )}
                 </div>
                 {!editBio ? (
-                    <p className="text-sm font-light w-72">
+                    <p className="text-sm font-light w-72 p-2 bg-slate-50 mt-2 rounded-xl">
                         {userData?.bio.length === 0
                             ? "User has no bio"
                             : userData?.bio}
