@@ -18,20 +18,6 @@ export const updateBio = async (newBio) => {
     } catch (error) {}
 };
 
-export const addCollection = async (collectionName) => {
-    try {
-        const { data } = await api.addCollection(collectionName);
-        return { ...data };
-    } catch (error) {}
-};
-
-export const deleteCollection = async (collectionName) => {
-    try {
-        const { data } = await api.deleteCollection(collectionName);
-        return { ...data };
-    } catch (error) {}
-};
-
 export const fetchUserById = async (id) => {
     try {
         const { data } = await api.fetchUserById(id);
