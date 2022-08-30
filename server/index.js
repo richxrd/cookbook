@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 import userRoutes from "./routes/users.js";
 import postsRoutes from "./routes/posts.js";
+import collectionRoutes from "./routes/collections.js";
 
 const app = express();
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use("/users", userRoutes);
 app.use("/posts", postsRoutes);
+app.use("/collections", collectionRoutes);
 
 app.get("/", (req, res) => {
     res.send("App is running");

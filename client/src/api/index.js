@@ -14,16 +14,14 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
+// User / Auth
 export const signIn = (formData) => API.post("/users/signin", formData);
 export const updateBio = (newBio) => API.patch("/users/updatebio", newBio);
 export const fetchUser = (uniqueId) => API.get(`/users/${uniqueId}`);
 export const fetchUserById = (id) => API.get(`/users/get/${id}`);
-export const addCollection = (collectionForm) =>
-    API.patch(`users/newcollection`, collectionForm);
-export const deleteCollection = (collectionForm) =>
-    API.patch(`users/deletecollection`, collectionForm);
 export const followUser = (form) => API.patch(`users/followuser`, form);
 
+// Recipes
 export const newPost = (formData) => API.post("/posts/newpost", formData);
 export const fetchPost = (id) => API.get(`/posts/get/${id}`);
 export const likePost = (formData) => API.patch("/posts/likepost", formData);
@@ -35,7 +33,12 @@ export const likeReview = (formData) =>
 export const deleteRecipe = (id) => API.delete(`/posts/delete/${id}`);
 export const updatePost = (formData) => API.patch("/posts/update", formData);
 
+// Collections
+export const addCollection = (collectionForm) =>
+    API.post(`collections/new`, collectionForm);
+export const getCollection = (id) => API.get(`/collections/${id}`);
+export const getAllCollections = (userId) =>
+    API.get(`/collections/getall/${userId}`);
+export const deleteCollection = (id) => API.delete(`collections/delete/${id}`);
 export const addToCollection = (formData) =>
-    API.patch("/posts/collection", formData);
-export const removeFromCollection = (formData) =>
-    API.patch("/posts/collection/delete", formData);
+    API.patch("/collections/add", formData);
