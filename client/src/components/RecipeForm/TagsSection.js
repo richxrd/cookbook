@@ -12,7 +12,7 @@ const TagsSection = ({ formData, setUpdatedForm }) => {
     const handleTagKeyDown = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            const value = e.target.value;
+            const value = e.target.value.toLowerCase();
             if (!value.trim()) return;
             setUpdatedForm({ ...formData, tags: [...formData.tags, value] });
             e.target.value = "";
