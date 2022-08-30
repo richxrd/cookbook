@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../components/GlobalComponents/LoadingPage";
 import CollectionsRecipeCard from "../components/CollectionsPage/CollectionsRecipeCard";
 
-import { getUser, deleteCollection } from "../api/user";
+import { getUser } from "../api/user";
+import { deleteCollection, getCollection } from "../api/collections";
 
 const Collections = () => {
     const [userData, setUserData] = useState(null);
@@ -26,35 +27,27 @@ const Collections = () => {
 
     useEffect(() => {}, [collection]);
     useEffect(() => {
-        setCollections();
-    }, [userData]);
-
-    const handleCollectionDelete = async (e) => {
-        e.preventDefault();
-
-        const deleteCollectionForm = {
-            id: auth._id,
-            collectionId: collectionId,
-        };
-
-        const data = await deleteCollection(deleteCollectionForm);
-        navigate(`/user/${data.result.uniqueId}`);
-    };
-
-    // Helpers
-    const setCollections = () => {
         if (collectionId === "liked") {
             setCollection(userData?.likes);
             setRecipes(userData?.likes);
         } else {
             if (userData) {
-                const collection = userData?.collections?.filter(
-                    (collection) => collection._id === collectionId
-                );
-                setCollection(collection[0]);
-                setRecipes(collection[0].recipes);
+                const getData = async () => {
+                    const collectionsData = await getCollection(collectionId);
+                    setCollection(collectionsData.result);
+                    setRecipes(collectionsData.result.recipes);
+                };
+
+                getData();
             }
         }
+    }, [userData]);
+
+    const handleCollectionDelete = async (e) => {
+        e.preventDefault();
+
+        await deleteCollection(collectionId);
+        navigate(`/user/${userData?.uniqueId}`);
     };
 
     const hasData = () => {
@@ -103,6 +96,9 @@ const Collections = () => {
                             <CollectionsRecipeCard
                                 recipe={recipe}
                                 key={recipe}
+                                userData={userData}
+                                setCollection={setCollection}
+                                setRecipes={setRecipes}
                             />
                         );
                     })}
