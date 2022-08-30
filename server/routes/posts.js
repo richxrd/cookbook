@@ -7,8 +7,6 @@ import {
     likePost,
     likeReview,
     deletePost,
-    addToCollection,
-    removeFromCollection,
     updatePost,
 } from "../controllers/posts.js";
 
@@ -23,6 +21,4 @@ postsRoutes.patch("/review/like", likeReview);
 postsRoutes.delete("/delete/:id", deletePost);
 postsRoutes.patch("/update", updatePost);
 
-postsRoutes.patch("/collection", addToCollection);
-postsRoutes.patch("/collection/delete", removeFromCollection);
 export default postsRoutes;

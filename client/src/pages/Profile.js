@@ -10,6 +10,7 @@ import ProfileView from "../components/Profile/ProfileView";
 const Profile = () => {
     // State Variables
     const [userData, setUserData] = useState(null);
+    const [collections, setCollections] = useState([]);
     const [profileView, setProfileView] = useState("recipes");
     const [recipes, setRecipes] = useState([]);
 
@@ -21,6 +22,7 @@ const Profile = () => {
         const getData = async () => {
             const data = await getUser(uniqueId);
             setUserData(data.result);
+            setCollections(data.collections);
 
             const orderedRecipes = [
                 ...data.recipes.sort(
@@ -59,9 +61,10 @@ const Profile = () => {
                     userData={userData}
                     profileView={profileView}
                     recipes={recipes}
+                    collections={collections}
                     setRecipes={setRecipes}
                     setUserData={setUserData}
-                    uniqueId
+                    setCollections={setCollections}
                 />
             </div>
         </div>

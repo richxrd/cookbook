@@ -19,15 +19,10 @@ const userSchema = mongoose.Schema({
         type: [String],
         default: [],
     },
-    collections: [
-        {
-            name: { type: String },
-            recipes: {
-                type: [String],
-                default: [],
-            },
-        },
-    ],
+    collections: {
+        type: [String],
+        default: [],
+    },
     likes: {
         type: [String],
         default: [],

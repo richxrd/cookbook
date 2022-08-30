@@ -1,5 +1,6 @@
 import Post from "../models/posts.js";
 import User from "../models/user.js";
+import Collection from "../models/collections.js";
 
 export const newPost = async (req, res) => {
     const { authorId } = req.body;
@@ -71,57 +72,6 @@ export const likePost = async (req, res) => {
     }
 };
 
-export const addToCollection = async (req, res) => {
-    const { userId, postId, collectionId } = req.body;
-    try {
-        const user = await User.findById(userId);
-
-        user.collections.forEach((collection) => {
-            if (collection._id.toString() === collectionId) {
-                const indexOfPost = collection.recipes.indexOf(postId);
-                if (indexOfPost === -1) {
-                    collection.recipes.push(postId);
-                }
-            }
-        });
-
-        const updatedUser = await User.findByIdAndUpdate(user._id, user, {
-            new: true,
-        });
-
-        res.status(200).json({ post: updatedUser });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-export const removeFromCollection = async (req, res) => {
-    const { userId, postId, collectionId } = req.body;
-
-    try {
-        const user = await User.findOne({ uniqueId: userId });
-
-        user.collections.forEach((collection) => {
-            if (collection._id.toString() === collectionId) {
-                const indexOfPost = collection.recipes.indexOf(postId);
-                if (indexOfPost >= 0) {
-                    collection.recipes = collection.recipes.filter(
-                        (recipe) => recipe !== postId
-                    );
-                }
-            }
-        });
-
-        const updatedUser = await User.findByIdAndUpdate(user._id, user, {
-            new: true,
-        });
-
-        res.status(200).json({ user: updatedUser });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
 export const addReview = async (req, res) => {
     const { authorId, comment, rate, postId } = req.body;
     try {
@@ -185,21 +135,6 @@ export const likeReview = async (req, res) => {
     } catch (error) {}
 };
 
-export const deletePost = async (req, res) => {
-    const { id } = req.params;
-
-    const post = await Post.findById(id);
-    const user = await User.findById(post.authorId);
-
-    user.recipesMade = user.recipesMade.filter((recipe) => recipe !== id);
-    await User.findByIdAndUpdate(user._id, user, { new: true });
-
-    await User.updateMany({}, { $pull: { likes: id } });
-
-    await Post.findByIdAndDelete(id);
-    res.json({ message: "Post deleted" });
-};
-
 export const updatePost = async (req, res) => {
     const newRecipe = req.body;
 
@@ -211,4 +146,19 @@ export const updatePost = async (req, res) => {
         );
         res.status(200).json({ post: updatedPost });
     } catch (error) {}
+};
+
+export const deletePost = async (req, res) => {
+    const { id } = req.params;
+
+    const post = await Post.findById(id);
+    const user = await User.findById(post.authorId);
+
+    user.recipesMade = user.recipesMade.filter((recipe) => recipe !== id);
+    await User.findByIdAndUpdate(user._id, user, { new: true });
+    await User.updateMany({}, { $pull: { likes: id } });
+    await Collection.updateMany({}, { $pull: { recipes: id } });
+
+    await Post.findByIdAndDelete(id);
+    res.json({ message: "Post deleted" });
 };

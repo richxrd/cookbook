@@ -1,6 +1,7 @@
 import { customAlphabet } from "nanoid";
 import Post from "../models/posts.js";
 import User from "../models/user.js";
+import Collection from "../models/collections.js";
 
 export const signin = async (req, res) => {
     const { email, token } = req.body;
@@ -61,7 +62,16 @@ export const fetchUser = async (req, res) => {
         const recipesFound = await Post.find({
             authorId: foundUser._id,
         });
-        res.status(200).json({ result: foundUser, recipes: recipesFound });
+
+        const collectionsFound = await Collection.find({
+            authorId: foundUser._id,
+        });
+
+        res.status(200).json({
+            result: foundUser,
+            recipes: recipesFound,
+            collections: collectionsFound,
+        });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -75,46 +85,18 @@ export const getUserById = async (req, res) => {
         const recipesFound = await Post.find({
             authorId: foundUser._id,
         });
-        res.status(200).json({ result: foundUser, recipes: recipesFound });
+        const collectionsFound = await Collection.find({
+            authorId: foundUser._id,
+        });
+
+        res.status(200).json({
+            result: foundUser,
+            recipes: recipesFound,
+            collections: collectionsFound,
+        });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
-};
-
-export const addCollection = async (req, res) => {
-    const { googleId, collectionName } = req.body;
-    try {
-        const user = await User.findOne({ googleId: googleId });
-        const newCollection = {
-            name: collectionName,
-            recipes: [],
-        };
-
-        user?.collections.push(newCollection);
-        const updatedUser = await User.findByIdAndUpdate(user._id, user, {
-            new: true,
-        });
-
-        res.status(200).json({ result: updatedUser });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-};
-
-export const deleteCollection = async (req, res) => {
-    const { id, collectionId } = req.body;
-
-    try {
-        const user = await User.findById(id);
-
-        user.collections = user.collections.filter(
-            (collection) => collection._id.toString() !== collectionId
-        );
-        const updatedUser = await User.findByIdAndUpdate(id, user, {
-            new: true,
-        });
-        res.status(200).json({ result: updatedUser });
-    } catch (error) {}
 };
 
 export const followUser = async (req, res) => {
