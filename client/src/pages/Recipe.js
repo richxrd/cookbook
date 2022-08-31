@@ -27,6 +27,8 @@ const Recipe = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
+    console.log(recipe);
+
     useEffect(() => {
         const getData = async () => {
             const recipe = await getPost(id);
