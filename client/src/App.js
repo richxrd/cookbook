@@ -10,6 +10,9 @@ import NewRecipe from "./pages/NewRecipe";
 import Profile from "./pages/Profile";
 import Collections from "./pages/Collections";
 import EditRecipe from "./pages/EditRecipe";
+import Explore from "./pages/Explore";
+import DietsPage from "./pages/DietsPage";
+import CuisinesPage from "./pages/CuisinesPage";
 
 const App = () => {
     return (
@@ -19,7 +22,9 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/auth" element={<Auth />} />
-                    {/* <Route path="/recipes" element={<Recipe />} /> */}
+                    <Route path="/explore" element={<Explore />} />
+                    <Route path="/diets" element={<DietsPage />} />
+                    <Route path="/cuisines" element={<CuisinesPage />} />
                     <Route path="/:id" element={<Recipe />} />
                     <Route path="/:id/edit" element={<EditRecipe />} />
                     <Route path="/new" element={<NewRecipe />} />

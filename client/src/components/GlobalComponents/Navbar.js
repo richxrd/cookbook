@@ -47,13 +47,22 @@ const Navbar = () => {
                 <div className="hidden md:flex">
                     {/* Desktop Menu */}
                     <ul className="hidden md:flex space-x-4 text-center whitespace-nowrap">
-                        <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
-                            Recipes
+                        <li
+                            onClick={() => navigate(`/explore`)}
+                            className="cursor-pointer hover:text-[#d9534f] transition duration-200"
+                        >
+                            Explore
                         </li>
-                        <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
-                            Quick Recipes
+                        <li
+                            onClick={() => navigate(`/diets`)}
+                            className="cursor-pointer hover:text-[#d9534f] transition duration-200"
+                        >
+                            Diets
                         </li>
-                        <li className="cursor-pointer hover:text-[#d9534f] transition duration-200">
+                        <li
+                            onClick={() => navigate(`/cuisines`)}
+                            className="cursor-pointer hover:text-[#d9534f] transition duration-200"
+                        >
                             Cuisines
                         </li>
                     </ul>
@@ -124,9 +133,24 @@ const Navbar = () => {
             >
                 {/* Menu */}
                 <ul className="flex flex-col space-y-3">
-                    <li className="cursor-pointer">Recipes</li>
-                    <li className="cursor-pointer">Quick Recipes</li>
-                    <li className="cursor-pointer">Cuisines</li>
+                    <li
+                        onClick={() => navigate(`/explore`)}
+                        className="cursor-pointer"
+                    >
+                        Explore
+                    </li>
+                    <li
+                        onClick={() => navigate(`/diets`)}
+                        className="cursor-pointer"
+                    >
+                        Diets
+                    </li>
+                    <li
+                        onClick={() => navigate(`/cuisines`)}
+                        className="cursor-pointer"
+                    >
+                        Cuisines
+                    </li>
                 </ul>
                 <div className="border border-b-yellow-300 my-3"></div>
                 {/* User */}
