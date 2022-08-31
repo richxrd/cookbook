@@ -9,6 +9,7 @@ import {
     deletePost,
     updatePost,
     getPosts,
+    getAllPosts,
 } from "../controllers/posts.js";
 
 const postsRoutes = express.Router();
@@ -16,6 +17,7 @@ const postsRoutes = express.Router();
 postsRoutes.get("/search", getPosts);
 postsRoutes.post("/newpost", newPost);
 postsRoutes.get("/get/:id", getPost);
+postsRoutes.get("/allrecipes", getAllPosts);
 postsRoutes.patch("/likepost", likePost);
 postsRoutes.patch("/review/add", addReview);
 postsRoutes.patch("/review/delete", deleteReview);

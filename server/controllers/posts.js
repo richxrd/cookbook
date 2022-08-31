@@ -48,6 +48,15 @@ export const getPosts = async (req, res) => {
     } catch (error) {}
 };
 
+export const getAllPosts = async (req, res) => {
+    try {
+        const posts = await Post.find();
+        res.status(200).json({ posts: posts });
+    } catch (error) {
+        res.status(500).json({ message: "Post not found" });
+    }
+};
+
 export const likePost = async (req, res) => {
     const { userId, postId } = req.body;
 
