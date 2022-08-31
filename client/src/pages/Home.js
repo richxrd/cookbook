@@ -17,10 +17,12 @@ const Home = () => {
             >
                 <div className="w-full h-screen">
                     <div className="flex h-full items-center justify-center max-w-screen-xl mx-auto px-6">
-                        <div className="flex flex-col text-center bg-white p-6 rounded-xl drop-shadow-2xl bg-opacity-70">
-                            <h1 className="text-6xl md:text-8xl">Cookbook</h1>
-                            <p className="text-2xl md:text-3xl">
-                                Some other text
+                        <div className="flex flex-col space-y-4 text-center bg-white p-12 rounded-xl shadow-2xl bg-opacity-80">
+                            <h1 className="text-6xl md:text-8xl font-semibold">
+                                Cookbook
+                            </h1>
+                            <p className="text-2xl md:text-3xl uppercase font-semibold tracking-wider shadow-inner">
+                                Simple Recipes For Any Occasion.
                             </p>
                         </div>
                     </div>
