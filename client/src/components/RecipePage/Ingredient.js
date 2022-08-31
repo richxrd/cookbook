@@ -2,7 +2,7 @@ import React from "react";
 
 const Ingredient = ({ name, quantity }) => {
     return (
-        <div className="flex space-x-1 my-4 items-center tracking-wide font-light">
+        <div className="flex my-4 items-center tracking-wide font-light">
             <input
                 type="checkbox"
                 className="bg-white hover:bg-[#ecb390] cursor-pointer 
@@ -10,7 +10,7 @@ const Ingredient = ({ name, quantity }) => {
                 checked:bg-[#96ceb4] active:bg-[#96ceb4] focus:bg-[#96ceb4] outline-none"
             />
             {quantity && <span className="pl-2">{quantity}</span>}
-            <span>{name}</span>
+            <span className="pl-2">{name}</span>
         </div>
     );
 };
