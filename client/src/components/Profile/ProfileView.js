@@ -17,11 +17,25 @@ const ProfileView = ({
 }) => {
     const [newCollection, setNewCollection] = useState(false);
     const [collectionName, setCollectionName] = useState("");
+    const [visibleRecipes, setVisibleRecipes] = useState(9);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleRecipeScroll);
+    }, []);
 
     useEffect(() => {
         setCollectionName("");
         setNewCollection(false);
     }, [profileView]);
+
+    const handleRecipeScroll = (e) => {
+        if (
+            window.innerHeight + e.target.documentElement.scrollTop + 1 >=
+            e.target.documentElement.scrollHeight - 318
+        ) {
+            setVisibleRecipes((visibleRecipes) => visibleRecipes + 3);
+        }
+    };
 
     const handleNewCollection = (e) => {
         setNewCollection(!newCollection);
@@ -168,7 +182,7 @@ const ProfileView = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Recipes View */}
                 {profileView === "recipes" &&
-                    recipes.map((recipe) => {
+                    recipes.slice(0, visibleRecipes).map((recipe) => {
                         return (
                             <ProfileRecipeCard
                                 key={recipe._id}
