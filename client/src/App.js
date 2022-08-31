@@ -13,6 +13,7 @@ import EditRecipe from "./pages/EditRecipe";
 import Explore from "./pages/Explore";
 import DietsPage from "./pages/DietsPage";
 import CuisinesPage from "./pages/CuisinesPage";
+import SearchResults from "./pages/SearchResults";
 
 const App = () => {
     return (
@@ -33,6 +34,7 @@ const App = () => {
                         path="/user/:uniqueId/collection/:collectionId"
                         element={<Collections />}
                     />
+                    <Route path="/explore/:term" element={<SearchResults />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
                 <Footer />
