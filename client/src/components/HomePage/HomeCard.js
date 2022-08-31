@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const HomeCard = ({ recipe }) => {
+    const navigate = useNavigate();
+
     const avgRating = () => {
         return (
             Object.entries(recipe.reviews).reduce(
@@ -11,10 +14,13 @@ const HomeCard = ({ recipe }) => {
     };
 
     return (
-        <div className="flex flex-col w-full h-fit md:h-60 shadow-md md:flex-row hover:shadow-xl hover:scale-[1.005] transition duration-200 cursor-pointer">
+        <div
+            onClick={() => navigate(`/${recipe._id}`)}
+            className="flex flex-col w-full h-fit md:h-60 shadow-md md:flex-row hover:shadow-xl hover:scale-[1.005] transition duration-200 cursor-pointer"
+        >
             {/* Image */}
             <img
-                src={recipe.image}
+                src={recipe.imageUrl}
                 alt=""
                 className="object-cover w-full h-60 md:w-[12rem] md:h-full"
             />

@@ -29,7 +29,7 @@ const Home = () => {
 
             {/* Middle */}
             <div className="flex flex-col space-y-6 py-12 md:space-y-8 max-w-screen-xl mx-auto px-6">
-                <HomeRow category={"Trending"} />
+                {/* <HomeRow category={"Trending"} /> */}
                 <HomeRow category={"Breakfast"} />
                 <HomeRow category={"Lunch"} />
                 <HomeRow category={"Dinner"} />
