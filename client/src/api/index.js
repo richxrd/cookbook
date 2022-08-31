@@ -38,6 +38,7 @@ export const fetchPosts = (formData) =>
             formData.tags
         }`
     );
+export const fetchAllPosts = () => API.get("/posts/allrecipes");
 
 // Collections
 export const addCollection = (collectionForm) =>
