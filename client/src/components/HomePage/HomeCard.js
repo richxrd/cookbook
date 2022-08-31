@@ -25,7 +25,7 @@ const HomeCard = ({ recipe }) => {
                 className="object-cover w-full h-60 md:w-[12rem] md:h-full"
             />
 
-            <div className="flex flex-col justify-between p-4 space-y-4 w-full md:w-[calc(100%-15rem)]">
+            <div className="flex flex-col justify-between p-4 space-y-4 w-full ">
                 <div className="flex flex-col space-y-4">
                     <h1 className="text-xl font-semibold tracking-wider wrap">
                         {recipe.title}

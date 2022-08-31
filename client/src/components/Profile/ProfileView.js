@@ -31,9 +31,9 @@ const ProfileView = ({
     const handleRecipeScroll = (e) => {
         if (
             window.innerHeight + e.target.documentElement.scrollTop + 1 >=
-            e.target.documentElement.scrollHeight - 318
+            e.target.documentElement.scrollHeight - 150
         ) {
-            setVisibleRecipes((visibleRecipes) => visibleRecipes + 3);
+            setVisibleRecipes((visibleRecipes) => visibleRecipes + 6);
         }
     };
 
