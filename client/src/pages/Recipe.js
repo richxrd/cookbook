@@ -27,12 +27,10 @@ const Recipe = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    console.log(recipe);
-
     useEffect(() => {
         const getData = async () => {
             const recipe = await getPost(id);
-            setRecipe(recipe);
+            setRecipe({ ...recipe });
         };
         getData();
     }, [id]);
@@ -40,7 +38,7 @@ const Recipe = () => {
     useEffect(() => {
         const getData = async () => {
             const data = await fetchUserById(recipe.authorId);
-            setUser(data.result);
+            setUser({ ...data.result });
         };
 
         if (recipe) {
