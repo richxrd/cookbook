@@ -134,9 +134,7 @@ const Recipe = () => {
     };
 
     const hasData = () => {
-        if (recipe === null || user === null || recipe.imageUrl == null)
-            return false;
-        else if ((auth && !collections) || !collectionOptions) return false;
+        if ((auth && !collections) || !collectionOptions) return false;
         else if (recipe) return true;
         else {
             return false;
