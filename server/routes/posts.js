@@ -8,10 +8,12 @@ import {
     likeReview,
     deletePost,
     updatePost,
+    getPosts,
 } from "../controllers/posts.js";
 
 const postsRoutes = express.Router();
 
+postsRoutes.get("/search", getPosts);
 postsRoutes.post("/newpost", newPost);
 postsRoutes.get("/get/:id", getPost);
 postsRoutes.patch("/likepost", likePost);

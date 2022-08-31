@@ -32,6 +32,12 @@ export const likeReview = (formData) =>
     API.patch("/posts/review/like", formData);
 export const deleteRecipe = (id) => API.delete(`/posts/delete/${id}`);
 export const updatePost = (formData) => API.patch("/posts/update", formData);
+export const fetchPosts = (formData) =>
+    API.get(
+        `/posts/search?searchQuery=${formData.title || "none"}&tags=${
+            formData.tags
+        }`
+    );
 
 // Collections
 export const addCollection = (collectionForm) =>

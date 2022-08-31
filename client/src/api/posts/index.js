@@ -14,6 +14,13 @@ export const getPost = async (id) => {
     } catch (error) {}
 };
 
+export const getPosts = async (formData) => {
+    try {
+        const { data } = await api.fetchPosts(formData);
+        return data.posts;
+    } catch (error) {}
+};
+
 export const likePost = async (formData) => {
     try {
         const { data } = await api.likePost(formData);

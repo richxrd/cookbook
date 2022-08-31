@@ -36,6 +36,18 @@ export const getPost = async (req, res) => {
     }
 };
 
+export const getPosts = async (req, res) => {
+    const { searchQuery, tags } = req.query;
+    try {
+        const title = new RegExp(searchQuery, "i");
+        const posts = await Post.find({
+            $or: [{ title }, { tags: { $in: tags.split(",") } }],
+        });
+
+        res.status(200).json({ posts: posts });
+    } catch (error) {}
+};
+
 export const likePost = async (req, res) => {
     const { userId, postId } = req.body;
 
