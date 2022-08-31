@@ -134,7 +134,7 @@ const Recipe = () => {
     };
 
     const hasData = () => {
-        if ((auth && !collections) || !collectionOptions) return false;
+        if (!user) return false;
         else if (recipe) return true;
         else {
             return false;
