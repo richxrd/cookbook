@@ -13,13 +13,16 @@ import Rating from "../components/GlobalComponents/Rating";
 import TimerCard from "../components/RecipePage/TimerCard";
 
 import { fetchUserById, getUser } from "../api/user";
-import { addToCollection, getPost, likePost } from "../api/posts";
+import { getPost, likePost } from "../api/posts";
+import { addToCollection } from "../api/collections";
 
 const Recipe = () => {
-    const [showCommentPrompt, setShowCommentPrompt] = useState(false);
     const [auth, setAuth] = useState(null);
     const [user, setUser] = useState(null);
     const [recipe, setRecipe] = useState(null);
+    const [showCommentPrompt, setShowCommentPrompt] = useState(false);
+    const [collections, setCollections] = useState(null);
+    const [collectionOptions, setCollectionOptions] = useState(null);
 
     const navigate = useNavigate();
     const { id } = useParams();
@@ -47,6 +50,15 @@ const Recipe = () => {
         const getAuthById = async () => {
             const authUser = JSON.parse(localStorage.getItem("profile"));
             const data = await getUser(authUser.authData?.result?.uniqueId);
+            setCollections(data.collections);
+            let collectionOptions = [];
+            data.collections.map((collection) => {
+                collectionOptions.push({
+                    label: collection.name,
+                    value: collection._id,
+                });
+            });
+            setCollectionOptions(collectionOptions);
             setAuth(data.result);
         };
         if (JSON.parse(localStorage.getItem("profile"))) {
@@ -55,6 +67,8 @@ const Recipe = () => {
     }, []);
 
     useEffect(() => {}, [user]);
+    useEffect(() => {}, [collections]);
+    useEffect(() => {}, [collectionOptions]);
 
     const addReviewClick = () => {
         setShowCommentPrompt(!showCommentPrompt);
@@ -80,26 +94,9 @@ const Recipe = () => {
         const submittionForm = {
             postId: recipe._id,
             collectionId: e.value,
-            userId: auth._id,
         };
 
         await addToCollection(submittionForm);
-    };
-
-    //helper
-
-    const getCollectionsOptions = () => {
-        let collectionOptions = [];
-
-        if (auth) {
-            auth.collections.map((collection) => {
-                collectionOptions.push({
-                    label: collection.name,
-                    value: collection._id,
-                });
-            });
-        }
-        return collectionOptions;
     };
 
     const renderLikeEdit = () => {
@@ -139,6 +136,7 @@ const Recipe = () => {
     const hasData = () => {
         if (recipe === null || user === null || recipe.imageUrl == null)
             return false;
+        else if ((auth && !collections) || !collectionOptions) return false;
         else if (recipe) return true;
         else {
             return false;
@@ -165,7 +163,7 @@ const Recipe = () => {
                                     <div>
                                         <Select
                                             name="collections"
-                                            options={getCollectionsOptions()}
+                                            options={collectionOptions}
                                             className="w-[200px]"
                                             isSearchable={false}
                                             placeholder="Add to Collection"
@@ -241,7 +239,14 @@ const Recipe = () => {
                 <div className="w-[320px] h-fit border mx-auto border-[#d9534f] rounded-md p-4 grow-0">
                     <h3 className="text-2xl font-medium">Nutritional Info</h3>
                     {Object.entries(recipe.nutrition).map(([key, value]) => {
-                        return <Nutrition key={key} name={key} value={value} />;
+                        return (
+                            <Nutrition
+                                key={key}
+                                name={key}
+                                value={value}
+                                measurement={key}
+                            />
+                        );
                     })}
                 </div>
             </div>
