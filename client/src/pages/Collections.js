@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-import LoadingPage from "../components/GlobalComponents/LoadingPage";
 import CollectionsRecipeCard from "../components/CollectionsPage/CollectionsRecipeCard";
 
 import { getUser } from "../api/user";
@@ -105,9 +104,7 @@ const Collections = () => {
             </div>
         </div>
     ) : (
-        <div>
-            <LoadingPage />
-        </div>
+        <div className="min-h-[calc(100vh-318px)]"></div>
     );
 };
 

@@ -320,7 +320,7 @@ const Recipe = () => {
             </div>
         </div>
     ) : (
-        <div className="h-fit py-60 md:h-[calc(100vh-318px)] md:py-0 max-w-screen-xl mx-auto flex items-center justify-center"></div>
+        <div className="min-h-[calc(100vh-318px)]"></div>
     );
 };
 

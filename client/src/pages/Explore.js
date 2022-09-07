@@ -112,62 +112,62 @@ const Explore = () => {
         );
     };
 
-    return (
-        recipes && (
-            <div className="min-h-[calc(100vh-318px)] pt-32 py-16 md:pt-32 px-6 mx-auto max-w-screen-xl flex flex-col space-y-8">
-                <h2 className="text-4xl font-semibold tracking-wide">
-                    Search Recipes
-                </h2>
+    return recipes ? (
+        <div className="min-h-[calc(100vh-318px)] pt-32 py-16 md:pt-32 px-6 mx-auto max-w-screen-xl flex flex-col space-y-8">
+            <h2 className="text-4xl font-semibold tracking-wide">
+                Search Recipes
+            </h2>
 
-                <div className="grid grid-cols-4 gap-4">
-                    {/* Filters */}
-                    {/* <div className="col-span-1 bg-slate-50 h-[500px] hidden md:block">
+            <div className="grid grid-cols-4 gap-4">
+                {/* Filters */}
+                {/* <div className="col-span-1 bg-slate-50 h-[500px] hidden md:block">
                         Filters
                     </div> */}
 
-                    {/* Searchbar */}
-                    <div className="col-span-4 md:col-span-4 flex flex-col space-y-4 ">
-                        <form
-                            className="md:h-10 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0"
-                            onSubmit={handleSearch}
+                {/* Searchbar */}
+                <div className="col-span-4 md:col-span-4 flex flex-col space-y-4 ">
+                    <form
+                        className="md:h-10 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0"
+                        onSubmit={handleSearch}
+                    >
+                        <input
+                            type="text"
+                            className="w-full border-green-400 focus:border-green-600 focus:ring-0 rounded-md"
+                            placeholder="Search"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                        />
+
+                        <button
+                            type="submit"
+                            className="px-8 h-10 shadow-sm bg-green-200 hover:bg-green-400 hover:shadow-lg cursor-pointer rounded-md transition duration-200"
                         >
-                            <input
-                                type="text"
-                                className="w-full border-green-400 focus:border-green-600 focus:ring-0 rounded-md"
-                                placeholder="Search"
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                            />
+                            Search
+                        </button>
+                        <div className="w-60 hidden md:block">
+                            {renderSort()}
+                        </div>
 
-                            <button
-                                type="submit"
-                                className="px-8 h-10 shadow-sm bg-green-200 hover:bg-green-400 hover:shadow-lg cursor-pointer rounded-md transition duration-200"
-                            >
-                                Search
-                            </button>
-                            <div className="w-60 hidden md:block">
-                                {renderSort()}
-                            </div>
-
-                            {/* <button className="w-full h-10 shadow-sm bg-[#ecb390] hover:bg-[#e7762b] hover:shadow-lg cursor-pointer rounded-md transition duration-200 md:hidden">
+                        {/* <button className="w-full h-10 shadow-sm bg-[#ecb390] hover:bg-[#e7762b] hover:shadow-lg cursor-pointer rounded-md transition duration-200 md:hidden">
                                 Filters
                             </button> */}
-                        </form>
-                        <div className="md:hidden">{renderSort()}</div>
-                        <div className="grid xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-                            {recipes.slice(0, visibleRecipes).map((recipe) => {
-                                return (
-                                    <ExploreRecipeCard
-                                        recipe={recipe}
-                                        key={recipe._id}
-                                    />
-                                );
-                            })}
-                        </div>
+                    </form>
+                    <div className="md:hidden">{renderSort()}</div>
+                    <div className="grid xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                        {recipes.slice(0, visibleRecipes).map((recipe) => {
+                            return (
+                                <ExploreRecipeCard
+                                    recipe={recipe}
+                                    key={recipe._id}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             </div>
-        )
+        </div>
+    ) : (
+        <div className="min-h-[calc(100vh-318px)]"></div>
     );
 };
 

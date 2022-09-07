@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import LoadingPage from "../components/GlobalComponents/LoadingPage";
 
 import { getUser } from "../api/user";
 import SideNav from "../components/Profile/SideNav";
@@ -69,9 +68,7 @@ const Profile = () => {
             </div>
         </div>
     ) : (
-        <div>
-            <LoadingPage />
-        </div>
+        <div className="min-h-[calc(100vh-318px)]"></div>
     );
 };
 
