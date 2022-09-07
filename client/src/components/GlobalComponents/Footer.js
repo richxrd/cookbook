@@ -1,34 +1,96 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+    const navigate = useNavigate();
+
     return (
-        <div className="w-full bg-[#f5eedc] text-black py-y px-2">
+        <div className="w-full bg-[#f5eedc] text-black px-2">
             <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-4 border-b-2 border-b-yellow-300 px-6 py-8">
-                <div>
-                    <h1 className="font-bold uppercase pt-2">Diets</h1>
+                <div className="cursor-pointer">
+                    <h1
+                        className="font-bold uppercase pt-2"
+                        onClick={() => navigate(`/diets`)}
+                    >
+                        Diets
+                    </h1>
                     <ul className="text-sm">
-                        <li className="py-1">Mediterranean</li>
-                        <li className="py-1">Paleo</li>
-                        <li className="py-1">Whole 30</li>
-                        <li className="py-1">Atkins</li>
-                        <li className="py-1">Vegan</li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/mediterranean`)}
+                        >
+                            Mediterranean
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/paleo`)}
+                        >
+                            Paleo
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/whole 30`)}
+                        >
+                            Whole 30
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/atkins`)}
+                        >
+                            Atkins
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/vegan`)}
+                        >
+                            Vegan
+                        </li>
                     </ul>
                 </div>
-                <div>
-                    <h1 className="font-bold uppercase pt-2">Cuisines</h1>
+                <div className="cursor-pointer">
+                    <h1
+                        className="font-bold uppercase pt-2"
+                        onClick={() => navigate(`/cuisines`)}
+                    >
+                        Cuisines
+                    </h1>
                     <ul className="text-sm">
-                        <li className="py-1">American</li>
-                        <li className="py-1">Chinese</li>
-                        <li className="py-1">Indian</li>
-                        <li className="py-1">Mexican</li>
-                        <li className="py-1">Italian</li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/american`)}
+                        >
+                            American
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/chinese`)}
+                        >
+                            Chinese
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/indian`)}
+                        >
+                            Indian
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/mexican`)}
+                        >
+                            Mexican
+                        </li>
+                        <li
+                            className="py-1"
+                            onClick={() => navigate(`/explore/italian`)}
+                        >
+                            Italian
+                        </li>
                     </ul>
                 </div>
                 <div>
                     <h6 className="font-bold uppercase pt-2">Get to Know Us</h6>
                     <ul className="text-sm">
                         <li className="py-1">About</li>
-                        <li className="py-1">Github</li>
                     </ul>
                 </div>
                 <div>
