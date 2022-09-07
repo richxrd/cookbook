@@ -41,7 +41,12 @@ export const getPosts = async (req, res) => {
     try {
         const title = new RegExp(searchQuery, "i");
         const posts = await Post.find({
-            $or: [{ title }, { tags: { $in: tags.split(",") } }],
+            $or: [
+                { title },
+                { tags: { $in: tags.split(",") } },
+                { diets: { $in: tags.split(",") } },
+                { cuisine: { $in: tags.split(",") } },
+            ],
         });
 
         res.status(200).json({ posts: posts });
