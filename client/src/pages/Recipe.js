@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { ThumbUpIcon } from "@heroicons/react/outline";
-import Select from "react-select";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useParams } from "react-router-dom";
 
-import AddReview from "../components/RecipePage/AddReview";
-import Comment from "../components/RecipePage/Comment";
-import Direction from "../components/RecipePage/Direction";
 import Divider from "../components/GlobalComponents/Divider";
-import Ingredient from "../components/RecipePage/Ingredient";
-import Nutrition from "../components/RecipePage/Nutrition";
-import Rating from "../components/GlobalComponents/Rating";
 import TimerCard from "../components/RecipePage/TimerCard";
 
 import { fetchUserById, getUser } from "../api/user";
-import { getPost, likePost } from "../api/posts";
-import { addToCollection } from "../api/collections";
+import { getPost } from "../api/posts";
+import RecipeIntroduction from "../components/RecipePage/RecipeIntroduction";
+import RecipeIngredients from "../components/RecipePage/RecipeIngredients";
+import RecipeNutrition from "../components/RecipePage/RecipeNutrition";
+import RecipeDirections from "../components/RecipePage/RecipeDirections";
+import RecipeComments from "../components/RecipePage/RecipeComments";
+import RecipeNav from "../components/RecipePage/RecipeNav";
 
 const Recipe = () => {
     const [auth, setAuth] = useState(null);
     const [user, setUser] = useState(null);
     const [recipe, setRecipe] = useState(null);
-    const [showCommentPrompt, setShowCommentPrompt] = useState(false);
     const [collections, setCollections] = useState(null);
     const [collectionOptions, setCollectionOptions] = useState(null);
+    const [activeNav, setActiveNav] = useState("Introduction");
 
-    const navigate = useNavigate();
     const { id } = useParams();
+    const introductionRef = useRef(null);
+    const ingredientsRef = useRef(null);
+    const nutritionRef = useRef(null);
+    const directionsRef = useRef(null);
+    const reviewsRef = useRef(null);
 
     useEffect(() => {
         const getData = async () => {
@@ -70,65 +71,85 @@ const Recipe = () => {
     useEffect(() => {}, [collections]);
     useEffect(() => {}, [collectionOptions]);
 
-    const addReviewClick = () => {
-        setShowCommentPrompt(!showCommentPrompt);
-    };
+    useEffect(() => {
+        window.addEventListener("scroll", () => {
+            if (!ingredientsRef.current) return;
+            if (
+                window.pageYOffset <
+                ingredientsRef.current.getBoundingClientRect().top +
+                    window.scrollY -
+                    200
+            ) {
+                setActiveNav("Introduction");
+            } else if (
+                window.pageYOffset >=
+                    ingredientsRef.current.getBoundingClientRect().top +
+                        window.scrollY -
+                        200 &&
+                window.pageYOffset <=
+                    nutritionRef.current.getBoundingClientRect().top +
+                        window.scrollY -
+                        200
+            ) {
+                setActiveNav("Ingredients");
+            } else if (
+                window.pageYOffset >=
+                    nutritionRef.current.getBoundingClientRect().top +
+                        window.scrollY -
+                        200 &&
+                window.pageYOffset <=
+                    directionsRef.current.getBoundingClientRect().top +
+                        window.scrollY -
+                        200
+            ) {
+                setActiveNav("Nutrition");
+            } else if (
+                window.pageYOffset >=
+                    directionsRef.current.getBoundingClientRect().top +
+                        window.scrollY -
+                        200 &&
+                window.pageYOffset <=
+                    reviewsRef.current.getBoundingClientRect().top +
+                        window.scrollY -
+                        200
+            ) {
+                setActiveNav("Directions");
+            } else {
+                setActiveNav("Reviews");
+            }
+        });
+    }, []);
 
-    const loginClick = () => {
-        navigate("/auth");
-    };
-
-    const handleLike = () => {
-        const likePostFirebase = async () => {
-            const formData = {
-                userId: auth._id,
-                postId: recipe._id,
-            };
-            const newRecipe = await likePost(formData);
-            setRecipe(newRecipe);
-        };
-        likePostFirebase();
-    };
-
-    const handleCollectionChange = async (e) => {
-        const submittionForm = {
-            postId: recipe._id,
-            collectionId: e.value,
-        };
-
-        await addToCollection(submittionForm);
-    };
-
-    const renderLikeEdit = () => {
-        if (auth._id !== recipe.authorId) {
-            return (
-                <div
-                    className={`flex space-x-1 items-center cursor-pointer py-1 px-3 rounded-lg hover:shadow-lg transition duration-200 ${
-                        recipe.likes.includes(auth._id)
-                            ? "bg-green-100"
-                            : "bg-gray-50"
-                    }`}
-                    onClick={handleLike}
-                >
-                    <ThumbUpIcon
-                        className={`w-5 h-5 ${
-                            recipe.likes.includes(auth._id)
-                                ? "text-green-500"
-                                : "text-slate-500"
-                        }`}
-                    />
-
-                    <span>Like</span>
-                </div>
+    const handleNavClick = (nav) => {
+        if (nav === "Introduction") {
+            window.scrollTo(0, 0);
+        } else if (nav === "Ingredients") {
+            window.scrollTo(
+                0,
+                ingredientsRef.current.getBoundingClientRect().top +
+                    window.scrollY -
+                    200
+            );
+        } else if (nav === "Nutrition") {
+            window.scrollTo(
+                0,
+                nutritionRef.current.getBoundingClientRect().top +
+                    window.scrollY -
+                    200
+            );
+        } else if (nav === "Directions") {
+            window.scrollTo(
+                0,
+                directionsRef.current.getBoundingClientRect().top +
+                    window.scrollY -
+                    200
             );
         } else {
-            return (
-                <div
-                    className="py-1 px-3 rounded-lg bg-red-200 hover:bg-red-400 hover:shadow-lg cursor-pointer transition duration-200"
-                    onClick={() => navigate(`/${recipe._id}/edit`)}
-                >
-                    Edit
-                </div>
+            window.scrollTo(
+                0,
+                reviewsRef.current.getBoundingClientRect().top +
+                    window.scrollY -
+                    200
             );
         }
     };
@@ -142,180 +163,84 @@ const Recipe = () => {
     };
 
     return hasData() ? (
-        <div className="h-fit pt-32 py-16 md:pt-32 px-6 mx-auto max-w-screen-xl">
-            {/* Name, author, image, text, timers */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-                <div className="flex flex-col space-y-4 col-span-3">
-                    {/* Name */}
-                    <h1 className="text-4xl font-semibold md:text-5xl">
-                        {recipe.title}
-                    </h1>
-                    <div className="flex flex-col space-y-4 justify-center">
-                        <div className="flex flex-col space-y-4 lg:flex-row lg:justify-between lg:space-y-0 items-center">
-                            <Rating
-                                ratingsList={Object.entries(recipe.reviews)}
-                            />
-                            {auth && auth._id !== recipe._authorId && (
-                                <div className="flex space-x-4 items-center font-light">
-                                    {renderLikeEdit()}
-                                    <div>
-                                        <Select
-                                            name="collections"
-                                            options={collectionOptions}
-                                            className="w-[200px]"
-                                            isSearchable={false}
-                                            placeholder="Add to Collection"
-                                            onChange={handleCollectionChange}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="flex items-center space-x-3">
-                            <img
-                                src={user.image}
-                                alt=""
-                                className="rounded-full w-[32px] h-[32px] cursor-pointer"
-                                onClick={() =>
-                                    navigate(`/user/${user.uniqueId}`)
-                                }
-                            />
-                            <h2>
-                                Recipe by{" "}
-                                <span
-                                    className="font-semibold cursor-pointer"
-                                    onClick={() =>
-                                        navigate(`/user/${user.uniqueId}`)
-                                    }
-                                >
-                                    {recipe.author}
-                                </span>
-                            </h2>
-                        </div>
-                    </div>
-                    {/* Text */}
-                    <p className="text-lg">{recipe.description}</p>
+        <div className="h-fit pt-32 py-16 md:pt-32 px-6 mx-auto max-w-screen-xl grid grid-cols-6 gap-8">
+            <div className="col-span-6 md:col-span-4">
+                <div ref={introductionRef}>
+                    <RecipeIntroduction
+                        recipe={recipe}
+                        auth={auth}
+                        user={user}
+                        setRecipe={setRecipe}
+                        collectionOptions={collectionOptions}
+                    />
+                </div>
 
-                    {/* Timers */}
-                    <div className="hidden md:block">
-                        <TimerCard
-                            prep={recipe.time.prep}
-                            cook={recipe.time.cook}
-                            servings={recipe.servings}
-                        />
+                <div className="md:hidden my-4">
+                    <TimerCard
+                        prep={recipe.time.prep}
+                        cook={recipe.time.cook}
+                        servings={recipe.servings}
+                    />
+                </div>
+
+                <Divider />
+
+                {/* Ingredients & Nutrition */}
+                <div className="flex flex-col space-y-4 py-4">
+                    <div ref={ingredientsRef}>
+                        <RecipeIngredients recipe={recipe} />
+                    </div>
+
+                    <div ref={nutritionRef}>
+                        <RecipeNutrition recipe={recipe} />
                     </div>
                 </div>
 
-                <img
-                    src={recipe.imageUrl}
-                    className="object-cover w-full h-[480px] mx-auto col-span-2"
-                    alt="/"
-                />
-            </div>
-            <div className="md:hidden my-4">
-                <TimerCard
-                    prep={recipe.time.prep}
-                    cook={recipe.time.cook}
-                    servings={recipe.servings}
-                />
-            </div>
+                <Divider />
 
-            <Divider />
-
-            {/* Ingredients & Nutrition */}
-            <div className="flex flex-col space-y-4 py-4 md:flex-row md:space-y-0 md:space-x-4">
-                {/* Ingredients */}
-                <div className="w-full h-fit py-4 grow">
-                    <h3 className="text-2xl font-medium">Ingredients</h3>
-                    {/* Ingredients list */}
-                    {Object.entries(recipe.ingredients).map(([key, value]) => {
-                        return (
-                            <Ingredient key={key} name={key} quantity={value} />
-                        );
-                    })}
+                {/* Directions */}
+                <div ref={directionsRef}>
+                    <RecipeDirections recipe={recipe} />
                 </div>
-                <div className="w-[320px] h-fit border mx-auto border-[#d9534f] rounded-md p-4 grow-0">
-                    <h3 className="text-2xl font-medium">Nutritional Info</h3>
-                    {Object.entries(recipe.nutrition).map(([key, value]) => {
-                        return (
-                            <Nutrition
-                                key={key}
-                                name={key}
-                                value={value}
-                                measurement={key}
-                            />
-                        );
-                    })}
+
+                <Divider />
+
+                {/* Comments */}
+                <div ref={reviewsRef}>
+                    <RecipeComments
+                        recipe={recipe}
+                        auth={auth}
+                        setRecipe={setRecipe}
+                    />
                 </div>
             </div>
-
-            <Divider />
-
-            {/* Directions */}
-            <div className="py-4">
-                <h3 className="text-2xl font-medium">Directions</h3>
-                <div className="flex flex-col justify-center space-y-8 my-8">
-                    {Object.entries(recipe.directions).map(
-                        (direction, index) => {
-                            return (
-                                <Direction
-                                    key={index}
-                                    index={index}
-                                    direction={direction[1]}
-                                />
-                            );
-                        }
-                    )}
-                </div>
-            </div>
-
-            <Divider />
-
-            {/* Comments */}
-            <div className="py-4">
-                <h3 className="text-2xl font-medium">Reviews</h3>
-
-                {!auth && (
-                    <button
-                        className="mt-4 py-2 px-4 bg-[#96ceb4] rounded-sm hover:bg-green-200 transition duration-150"
-                        onClick={loginClick}
-                    >
-                        Log in to add a review
-                    </button>
-                )}
-
-                {auth && auth._id !== recipe.authorId && (
-                    <button
-                        className="mt-4 py-2 px-4 bg-[#96ceb4] rounded-sm hover:bg-green-200 transition duration-150"
-                        onClick={addReviewClick}
-                    >
-                        Add Review
-                    </button>
-                )}
-
-                {auth && auth._id !== recipe.authorId && showCommentPrompt && (
-                    <div className="mt-4 w-full">
-                        <AddReview
-                            authId={auth._id}
-                            postId={recipe._id}
-                            setUpdatedRecipe={setRecipe}
-                            setPrompt={setShowCommentPrompt}
-                        />
-                    </div>
-                )}
-
-                <div className="flex flex-col justify-center">
-                    {recipe.reviews.map((review, index) => {
-                        return (
-                            <Comment
-                                key={index}
-                                review={review}
-                                auth={auth}
-                                recipeId={recipe._id}
-                                setUpdatedRecipe={setRecipe}
-                            />
-                        );
-                    })}
+            <div className="hidden md:block col-span-2 py-8 relative">
+                <div className="fixed w-[250px]">
+                    <RecipeNav
+                        nav="Introduction"
+                        active={activeNav === "Introduction"}
+                        handleNavClick={handleNavClick}
+                    />
+                    <RecipeNav
+                        nav="Ingredients"
+                        active={activeNav === "Ingredients"}
+                        handleNavClick={handleNavClick}
+                    />
+                    <RecipeNav
+                        nav="Nutrition"
+                        active={activeNav === "Nutrition"}
+                        handleNavClick={handleNavClick}
+                    />
+                    <RecipeNav
+                        nav="Directions"
+                        active={activeNav === "Directions"}
+                        handleNavClick={handleNavClick}
+                    />
+                    <RecipeNav
+                        nav="Reviews"
+                        active={activeNav === "Reviews"}
+                        handleNavClick={handleNavClick}
+                    />
                 </div>
             </div>
         </div>
